@@ -36,6 +36,9 @@ const int gPinBackUpLight = 5;
 const int gPinRightBlinker = 9;
 const int gPinLightBlinker = 10;
 
+/**
+ * Constructor
+ */
 RcCarLights::RcCarLights() :
         m_RemoteControlCarAdapter(gPinThrottle, gPinSteering)
 {
@@ -67,6 +70,9 @@ RcCarLights::RcCarLights() :
     m_isBlinkingOn = false;
 }
 
+/**
+ * configure the input and output pins of
+ */
 void RcCarLights::setup(void)
 {
     Serial.begin(9600);
@@ -216,7 +222,8 @@ void RcCarLights::handleHeadlight()
     // switch headlights on or off
     if (m_areParkingLightsOn)
     {
-        if (!m_isLightSwitchPressed)
+        // throttle switch forward will be ignored to suppress that headlights will be switched on immediately
+        if (RemoteControlCarAdapter::FORWARD == m_RemoteControlCarAdapter.getThrottleSwitch())
         {
             // lights are switched on let's test for any movement
             if (RemoteControlCarAdapter::STOP != m_RemoteControlCarAdapter.getThrottle())
