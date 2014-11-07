@@ -22,6 +22,7 @@
 #define RcCarLights_h
 
 #include "RemoteControlCarAdapter.h"
+#include "SimpleRcCarLightOutput.h"
 
 class RcCarLights
 {
@@ -35,9 +36,8 @@ public:
 private:
     void updateLightStatus();
 
-    void setNeoPixelStatus();
+    void setLights();
 
-    void refreshNeoPixels();
     void handleLightSwitch();
     void handleHeadlight();
     void handleBackUpLights();
@@ -48,7 +48,7 @@ private:
 private:
 
     // duration in msec to switch on/off lights
-    const long SWITCH_DURATION_HEADINGLIGHTS = 1000;
+    const long SWITCH_DURATION_LIGHTS = 1000;
 
     // delay in msec to switch from Headlights to Parking light if car is stopped
     const long DIM_HEADLIGHTS_TO_PARKING_DELAY = 1500;
@@ -62,30 +62,14 @@ private:
     // switch of delay for breaks to decrease flickering
     const long BREAK_LIGHTS_OFF_DELAY = 200;
 
+    // acceleration threshold for brake lights
     const long BREAK_ACCELERATION_LEVEL = -20;
 
-    // is true if parking lights are on, false otherwise
-    bool m_areParkingLightsOn;
-
+    // flag if light is switched is currently pressed (needed to suppress toggling the lights)
     bool m_isLightSwitchPressed;
-
-    // is true if dimmed headlights are on, false otherwise
-    bool m_areHeadlightsOn;
-
-    // is true if brake light is on, false otherwise
-    bool m_isBrakeLightOn;
 
     // timestamp when brake lights are switched on
     long m_BrakeLightsOnTimestamp;
-
-    // is true if back up light is on, false otherwise
-    bool m_isBackUpLightOn;
-
-    // is true if right blink lights are on, false otherwise
-    bool m_areRightBlinkLightsOn;
-
-    // is true if left blink lights are on, false otherwise
-    bool m_areLeftBlinkLightsOn;
 
     // last timestamp then blinker was switched on or off
     long m_LastBlinkTimestamp;
@@ -94,6 +78,10 @@ private:
     bool m_isBlinkingOn;
 
     RemoteControlCarAdapter m_RemoteControlCarAdapter;
+
+    SimpleRcCarLightOutput m_LightOutput;
+
+    AbstractRcCarLightOutput::LightStatus_t m_LightStatus;
 };
 
 #endif
