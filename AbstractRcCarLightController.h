@@ -18,9 +18,10 @@
  *
  * --------------------------------------------------------------------*/
 
-#ifndef ABSTRACTRCCARLIGHTOUTPUT_H_
-#define ABSTRACTRCCARLIGHTOUTPUT_H_
+#ifndef ABSTRACTRCCARLIGHTCONTROLLER_H_
+#define ABSTRACTRCCARLIGHTCONTROLLER_H_
 
+class LightSwitchBehaviour;
 
 /**
  * Abstarct base class for RC car light output
@@ -29,9 +30,14 @@
  * method.
  * Both methods (setupPins and loop) has to be overloaded by a concrete implementation class.
  */
-class AbstractRcCarLightOutput
+class AbstractRcCarLightController
 {
 public:
+    typedef enum
+    {
+        PARKING_LIGHT, HEADLIGHT, TAIL_LIGHT, RIGHT_BLINKER, LEFT_BLINKER, BACKUP_LIGHT, BRAKE_LIGHT
+    } LightType_t;
+
     /**
      * struct to store several flags to represent the status of each light "category"
      */
@@ -43,18 +49,18 @@ public:
         unsigned int rightBlinker : 1; // 1 if right blink lights are on, otherwise 0
         unsigned int leftBlinker  : 1; // 1 if left blink lights are on, otherwise 0
         unsigned int backUpLight  : 1; // 1 if back up light is on, otherwise 0
-        unsigned int brakeLight   : 1; // is 1 if brake light is on, 0 otherwise
+        unsigned int brakeLight   : 1; // 1 if brake light is on, 0 otherwise
     } LightStatus_t;
 
     /**
      * constructor
      */
-    AbstractRcCarLightOutput( void );
+    AbstractRcCarLightController( void );
 
     /**
      * destructor
      */
-    virtual ~AbstractRcCarLightOutput(void);
+    virtual ~AbstractRcCarLightController(void);
 
     /**
      * setup the pins.
@@ -65,7 +71,15 @@ public:
     virtual void setupPins(void) = 0;
 
     /**
-     * provides the given lightstatus to the output pins
+     * allows to add a behaviour for a specifc light type.
+     *
+     * @param pLightType lights type where a behaviour should be assigned
+     * @param pLightSwitchBehaviour behaviour, which influences the light switching
+     */
+    virtual void addBehaviour(LightType_t pLightType, LightSwitchBehaviour *pLightSwitchBehaviour) = 0;
+
+    /**
+     * provides the given light status to the output pins
      *
      * This method will be called by the general loop method of class RcCarLights.
      * Overload this method to implement the specific need to pass the light status
@@ -73,8 +87,8 @@ public:
      *
      * @param lightStatus current light status
      */
-    virtual void loop(LightStatus_t lightStatus) = 0;
+    virtual void loop(LightStatus_t pLightStatus) = 0;
 };
 
 
-#endif /* ABSTRACTRCCARLIGHTOUTPUT_H_ */
+#endif /* ABSTRACTRCCARLIGHTCONTROLLER_H_ */

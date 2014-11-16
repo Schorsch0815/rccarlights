@@ -39,7 +39,7 @@ public:
      * @param pinThrottle defines the (digital) arduino pin, which is used to read the throttle channel
      * @param pinSteering defines the (digital) arduino pin, which is used to read the steering value
      */
-    RemoteControlCarAdapter(int pinThrottle, int pinSteering);
+    RemoteControlCarAdapter(int pinThrottle, bool pThrottleReverse, int pinSteering);
 
     /**
      * configure the arduino board to use specified pins for throttle and steering
@@ -161,6 +161,8 @@ private:
 
     // status of throttle, could be FORWARD, STOP or BACKWARD
     Throttle_t m_Throttle;
+
+    bool m_ThrottleReverse;
 
     // duration of the current throttle in milli seconds
     unsigned long m_DurationOfThrottle;
