@@ -18,12 +18,13 @@
  *
  * --------------------------------------------------------------------*/
 
-#ifndef SIMPLERCCARLIGHTOUTPUT_H_
-#define SIMPLERCCARLIGHTOUTPUT_H_
+#ifndef SIMPLERCCARLIGHTCONTROLLER_H_
+#define SIMPLERCCARLIGHTCONTROLLER_H_
 
 #include "Arduino.h"
 
-#include "AbstractRcCarLightOutput.h"
+#include "AbstractRcCarLightController.h"
+#include "LightSwitchBehaviour.h"
 
 /**
  * Simple implementation of a RcCarLight output class
@@ -33,7 +34,7 @@
  * The used pins have to passed in the right order to the constructor and the loop method will set these pins to HIGH
  * according the light status passed.
  */
-class SimpleRcCarLightOutput : public AbstractRcCarLightOutput
+class SimpleRcCarLightController : public AbstractRcCarLightController
 {
 public:
     /**
@@ -45,8 +46,8 @@ public:
      * @param pinBackUpLight specifies pin used for back up  light
      * @param pinBrakeLight specifies pin used for brake light
      */
-    SimpleRcCarLightOutput(int pinParkingLight, int pinHeadlight, int pinRightBlinker, int pinLeftBlinker,
-                           int pinBackUpLight, int pinBrakeLight);
+    SimpleRcCarLightController(int pPinParkingLight, int pPinHeadlight, int pPinRightBlinker, int pPinLeftBlinker,
+                           int pPinBackUpLight, int pPinBrakeLight);
 
     /**
      * configures the required pins for OUTPUT.
@@ -56,9 +57,17 @@ public:
     void setupPins(void);
 
     /**
+     * allows to add a behaviour for a specifc light type. The SimpleRcCarLightControllor only support a behaviour for the headlights.
+     *
+     * @param pLightType lights type where a behaviour should be assigned
+     * @param pLightSwitchBehaviour behaviour, which influences the light switching
+     */
+    void addBehaviour(LightType_t pLightType, LightSwitchBehaviour *pLightSwitchBehaviour);
+
+    /**
      *  sets the configured pins according to the light status
      */
-    void loop(LightStatus_t lightStatus);
+    void loop(LightStatus_t pLightStatus);
 
 private:
     // pin for parking lights
@@ -78,6 +87,8 @@ private:
 
     // pin or brake lights
     int m_PinBrakeLight;
+
+    LightSwitchBehaviour *m_headlightBehaviour;
 };
 
-#endif /* SIMPLERCCARLIGHTOUTPUT_H_ */
+#endif /* SIMPLERCCARLIGHTCONTROLLER_H_ */

@@ -22,7 +22,7 @@
 #define RcCarLights_h
 
 #include "RemoteControlCarAdapter.h"
-#include "SimpleRcCarLightOutput.h"
+#include "SimpleRcCarLightController.h"
 
 class RcCarLights
 {
@@ -79,9 +79,9 @@ private:
 
     RemoteControlCarAdapter m_RemoteControlCarAdapter;
 
-    SimpleRcCarLightOutput m_LightOutput;
+    SimpleRcCarLightController m_LightController;
 
-    AbstractRcCarLightOutput::LightStatus_t m_LightStatus;
+    AbstractRcCarLightController::LightStatus_t m_LightStatus;
 };
 
 #endif

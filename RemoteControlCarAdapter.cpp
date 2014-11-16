@@ -24,19 +24,23 @@
 #include "RemoteControlCarAdapter.h"
 
 #define NUM_CALIBRATION_ITERATION    20
+
 /**
  * Constructor
  *
  * Initialize the adapter with the start values.
  *
  * @param pinThrottle specifies the arduino board pin number used for throttle
+ * @param pThrottleReverse
  * @param pinSteering specifies the arduino board pin number used for steering
  */
-RemoteControlCarAdapter::RemoteControlCarAdapter(int pinThrottle, int pinSteering)
+RemoteControlCarAdapter::RemoteControlCarAdapter(int pinThrottle, bool pThrottleReverse, int pinSteering)
 {
     // store pins used for input
     m_PinThrottle = pinThrottle;
     m_PinSteering = pinSteering;
+
+    m_ThrottleReverse = pThrottleReverse;
 
     // let's start with 0, 0 means uninitialized
     m_RCThrottleNullValue = 0;
@@ -190,11 +194,11 @@ void RemoteControlCarAdapter::refreshAcceleration(long lDeltaT)
 
 int RemoteControlCarAdapter::calcAccelerationFactor()
 {
-    if (FORWARD == m_Throttle)
+    if ((m_ThrottleReverse ? BACKWARD : FORWARD) == m_Throttle)
     {
         return -1;
     }
-    else if (BACKWARD == m_Throttle)
+    else if ((m_ThrottleReverse ? FORWARD : BACKWARD) == m_Throttle)
     {
         return 1;
     }
@@ -258,9 +262,9 @@ return millis();
 RemoteControlCarAdapter::Throttle_t RemoteControlCarAdapter::calculateThrottle(void)
 {
 if (m_RCThrottleNullValue + EPLSILON_NULL_THROTTLE < m_RCThrottleValue)
-    return BACKWARD;
+    return (m_ThrottleReverse ? FORWARD : BACKWARD);
 else if (m_RCThrottleNullValue - EPLSILON_NULL_THROTTLE > m_RCThrottleValue)
-    return FORWARD;
+    return (m_ThrottleReverse ? BACKWARD : FORWARD);
 else
     return STOP;
 }
@@ -274,11 +278,11 @@ if (m_RCThrottleValue < m_RCThrottleNullValue - DELTA_THROTTLE_SWITCH
 }
 else if (m_RCThrottleNullValue + EPLSILON_NULL_THROTTLE < m_RCThrottleValue)
 {
-    return BACKWARD;
+    return (m_ThrottleReverse ? FORWARD : BACKWARD);
 }
 else if (m_RCThrottleNullValue - EPLSILON_NULL_THROTTLE > m_RCThrottleValue)
 {
-    return FORWARD;
+    return (m_ThrottleReverse ? BACKWARD : FORWARD);
 }
 
 return STOP;

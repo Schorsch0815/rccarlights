@@ -21,6 +21,7 @@
 #include "Arduino.h"
 //#include <Adafruit_NeoPixel.h>
 #include "RcCarLights.h"
+#include "XenonLightSwitchBehaviour.h"
 
 // pin 7 for pwm input
 const int gPinThrottle = 7;
@@ -36,11 +37,14 @@ const int gPinBackUpLight = 5;
 const int gPinRightBlinker = 9;
 const int gPinLeftBlinker = 10;
 
+#define THROTTLE_REVERSE    true
+XenonLightSwitchBehaviour gHeadlightBehaviour;
+
 /**
  * Constructor
  */
 RcCarLights::RcCarLights() :
-        m_RemoteControlCarAdapter(gPinThrottle, gPinSteering), m_LightOutput(gPinParkingLight, gPinHeadingLight,
+        m_RemoteControlCarAdapter(gPinThrottle, THROTTLE_REVERSE, gPinSteering), m_LightController(gPinParkingLight, gPinHeadingLight,
                                                                              gPinRightBlinker, gPinLeftBlinker,
                                                                              gPinBackUpLight, gPinBreakLight)
 {
@@ -80,7 +84,10 @@ void RcCarLights::setup(void)
     Serial.begin(9600);
     m_RemoteControlCarAdapter.setupPins();
 
-    m_LightOutput.setupPins();
+    m_LightController.setupPins();
+    m_LightController.addBehaviour(AbstractRcCarLightController::HEADLIGHT, &gHeadlightBehaviour);
+    Serial.print("\nSetup.");
+
 }
 
 /**
@@ -94,6 +101,7 @@ void RcCarLights::loop(void)
     m_RemoteControlCarAdapter.refresh();
 
     updateLightStatus();
+#ifdef DEBUG
 
     Serial.print("\nLights : ");
     Serial.print(m_LightStatus.parkingLight);
@@ -134,30 +142,10 @@ void RcCarLights::loop(void)
 
     Serial.print("  Steering : ");
     Serial.print(m_RemoteControlCarAdapter.getSteering());
+#endif
 
     setLights();
 
-#ifdef DEBUG
-    Serial.print("\nThrottle : ");
-    Serial.print(m_RemoteControlCarAdapter.getThrottle());
-
-    Serial.print(" Throttle Switch : ");
-    Serial.print(m_RemoteControlCarAdapter.getThrottleSwitch());
-    Serial.print(" Duration : ");
-    Serial.print(m_RemoteControlCarAdapter.getDurationOfThrottleSwitch());
-
-    Serial.print(" [ms]; Steering : ");
-    Serial.print(m_RemoteControlCarAdapter.getSteering());
-
-    Serial.print(" Steering Switch : ");
-    Serial.print(m_RemoteControlCarAdapter.getSteeringSwitch());
-    Serial.print(" Duration : ");
-    Serial.print(m_RemoteControlCarAdapter.getDurationOfSteeringSwitch());
-    Serial.print(" [ms]; Steering : ");
-
-    Serial.print("; Acceleration : ");
-    Serial.print(m_RemoteControlCarAdapter.getAcceleration());
-#endif
 }
 
 /**
@@ -189,7 +177,7 @@ void RcCarLights::updateLightStatus()
  */
 void RcCarLights::setLights()
 {
-    m_LightOutput.loop(m_LightStatus);
+    m_LightController.loop(m_LightStatus);
 }
 
 /**

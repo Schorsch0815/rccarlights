@@ -18,12 +18,12 @@
  *
  * --------------------------------------------------------------------*/
 
-#include "AbstractRcCarLightOutput.h"
+#include "AbstractRcCarLightController.h"
 
 /**
  * contructor
  */
-AbstractRcCarLightOutput::AbstractRcCarLightOutput(void)
+AbstractRcCarLightController::AbstractRcCarLightController(void)
 {
 }
 
@@ -31,6 +31,6 @@ AbstractRcCarLightOutput::AbstractRcCarLightOutput(void)
 /**
  * destructor
  */
-AbstractRcCarLightOutput::~AbstractRcCarLightOutput(void)
+AbstractRcCarLightController::~AbstractRcCarLightController(void)
 {
 }
