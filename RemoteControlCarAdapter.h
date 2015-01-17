@@ -62,7 +62,7 @@ public:
      */
     inline Throttle_t getThrottle(void)
     {
-        return m_Throttle;
+        return mThrottle;
     }
 
     /**
@@ -71,7 +71,7 @@ public:
      */
     inline Throttle_t getThrottleSwitch(void)
     {
-        return m_ThrottleSwitch;
+        return mThrottleSwitch;
     }
 
     /**
@@ -79,7 +79,7 @@ public:
      */
     inline unsigned long getDurationOfThrottleSwitch(void)
     {
-        return m_DurationOfThrottleSwitch;
+        return mDurationOfThrottleSwitch;
     }
 
     /**
@@ -87,7 +87,7 @@ public:
      */
     inline Steering_t getSteering(void)
     {
-        return m_Steering;
+        return mSteering;
     }
 
     /**
@@ -96,7 +96,7 @@ public:
      */
     inline Steering_t getSteeringSwitch(void)
     {
-        return m_SteeringSwitch;
+        return mSteeringSwitch;
     }
 
     /**
@@ -104,7 +104,7 @@ public:
      */
     inline unsigned long getDurationOfSteeringSwitch(void)
     {
-        return m_DurationOfSteeringSwitch;
+        return mDurationOfSteeringSwitch;
     }
 
     /**
@@ -112,36 +112,103 @@ public:
      */
     inline short getAcceleration(void)
     {
-        return m_Acceleration;
+        return mAcceleration;
     }
 
     /*
      inline short getDurationOfStop(void)
      {
-     return m_DurationOfStop;
+     return mDurationOfStop;
      }
      */
 
 private:
+    /**
+     * Reads input values from configured pins
+     *
+     * This method reads the values provided by the remote controller to the arduino board
+     * at the configured pins for throttle and steering
+     */
     unsigned long readInputs(void);
 
+    /**
+     *
+     * @return if remote controller is calibrated
+     */
     inline bool isCalibrated(void)
     {
-        return m_IsCalibrated;
+        return mIsCalibrated;
     }
 
+    /**
+     *
+     * @return current throttle value (FORWARD, STOP or BACKWARD)
+     */
     Throttle_t calculateThrottle(void);
+    /**
+     *
+     * @return current throttle switch value (FORWARD, STOP, BACKWARD or UNDEFINED_THROTTLE if throttle value is
+     * out of throttle switch range)
+     */
     Throttle_t calculateThrottleSwitch(void);
+    /**
+     *
+     * @return current steering value (LEFT, NEUTRAL or RIGHT)
+     */
     Steering_t calculateSteering(void);
+    /**
+     *
+     * @return current steering switch value (LEFT, NEUTRAL, RIGHT or UNDEFINED_STEERING if steering value is
+     * out of steering switch range)
+     */
     Steering_t calculateSteeringSwitch(void);
 
-    unsigned long determineDuration(unsigned long oldDuration, unsigned long oldValue, unsigned long newValue,
-                                    unsigned long lDeltaT);
-    void refreshThrottle(long lDeltaT);
-    void refreshThrottleSwitch(long lDeltaT);
-    void refreshSteeringSwitch(long lDeltaT);
-    void refreshAcceleration(long lDeltaT);
-    int calcAccelerationFactor();
+    /**
+     * Determines duration of a remote control signal based on the old and the new value of the signal. If the values are
+     * equal the last duration is increased by the passed delta. otherwise it's set to 0.
+     *
+     * @param pOldValue old value of the signal
+     * @param pNewValue new value of the signal
+     * @param pPreviousDuration previous duration in milliseconds from last measurement
+     * @param pDeltaT time in milliseconds passed since last measurement
+     *
+     * @return new duration in milliseconds
+     */
+    unsigned long determineDuration(int pOldValue, int pNewValue, unsigned long pPreviousDuration,
+                                    unsigned long pDeltaT);
+
+    /**
+     * refreshes the current throttle status from the throttle channel. Status can be FORWARD, STOP and BACKWARD. In case the
+     * status has changed the duration was reseted to zero, otherwise it will be increased.
+     * @param pDeltaT in milliseconds between last refresh and current refresh
+     */
+    void refreshThrottle(unsigned long pDeltaT);
+    /**
+     * refreshes the current throttle switch status from the throttle channel. Status can be FORWARD, STOP and BACKWARD. In case the
+     * status has changed the duration was reseted to zero, otherwise it will be increased.
+     * @param pDeltaT in milliseconds between last refresh and current refresh
+     */
+    void refreshThrottleSwitch(unsigned long pDeltaT);
+    /**
+     * refreshes the current steering switch status from the throttle channel. Status can be FORWARD, STOP and BACKWARD. In case the
+     * status has changed the duration was reseted to zero, otherwise it will be increased.
+     * @param pDeltaT in milliseconds between last refresh and current refresh
+     */
+    void refreshSteeringSwitch(unsigned long pDeltaT);
+    /**
+     * refreshes the acceleration attribute from the remote control throttle setting. For measurement of the acceleration an individual
+     * acceleration interval is used. The current acceleration value is calculated as a difference between the current throttle and
+     * the throttle value from the last acceleration measuring point. The sign of the value is negative when the car slows down,
+     * independent if car is moving forward or backward.
+     * @param pDeltaT  in milliseconds between last refresh and current refresh
+     */
+    void refreshAcceleration(unsigned long pDeltaT);
+    /**
+     * returns a factor to correct the algebraic sign of the acceleration value. In case the car moves forward, it returns 1 if
+     * car moves backwards it returns -1 otherwise 0.
+     * @return the acceleration factor (-1, 0 or 1)
+     */
+int calcAccelerationFactor();
 
 private:
     // measure interval between to values of throttle to determine acceleration
@@ -160,75 +227,75 @@ private:
     const unsigned long DELTA_STEERING_SWITCH = 60;
 
     // status of throttle, could be FORWARD, STOP or BACKWARD
-    Throttle_t m_Throttle;
+    Throttle_t mThrottle;
 
-    bool m_ThrottleReverse;
+    bool mThrottleReverse;
 
     // duration of the current throttle in milli seconds
-    unsigned long m_DurationOfThrottle;
+    unsigned long mDurationOfThrottle;
 
     // status of throttle switch, could be FORWARD, STOP or BACKWARD
     // The throttle switch, means the that throttle was minimal out of neutral position,
     // the limit is the value defined by DELTA_THROTTLE_SWITCH
     // but the engine is not running (may be needs additional configuration of speed
     // controller)
-    Throttle_t m_ThrottleSwitch;
+    Throttle_t mThrottleSwitch;
 
     // duration in milli seconds of the current throttle value, will be
     // reset to zero in case value changes
-    unsigned long m_DurationOfThrottleSwitch;
+    unsigned long mDurationOfThrottleSwitch;
 
     // status of the steering, could be LEFT, NEUTRAL or RIGHT
-    Steering_t m_Steering;
+    Steering_t mSteering;
 
     // status of steering switch, could be LEFT, NEUTRAL or RIGHT
     // The steering switch, means the that steering was minimal out of neutral position
     // the limit is the value defined by DELTA_STEERING_SWITCH
-    Steering_t m_SteeringSwitch;
+    Steering_t mSteeringSwitch;
 
     // duration in milli seconds of the current steering value, will be
     // reset to zero in case value changes
-    unsigned long m_DurationOfSteeringSwitch;
+    unsigned long mDurationOfSteeringSwitch;
 
     // acceleration of the car:
     //  - positive values mean that the car speed up when driving forward
     //    and slow down when driving backward
     //  - negative values mean that the car speed up when driving backward
     //    and slow down when driving forward
-    int m_Acceleration;
+    int mAcceleration;
 
     // holds the number of seconds the car stand still since last motion
-    // short m_DurationOfStop;
+    // short mDurationOfStop;
 
     // throttle value read from pulseIn
-    unsigned long m_RCThrottleNullValue;
+    unsigned long mRCThrottleNullValue;
 
     // throttle value read from pulseIn
-    unsigned long m_RCThrottleValue;
+    unsigned long mRCThrottleValue;
 
-    // throttle value stored from pulseIn read m_PreviousThrottleDelay
-    unsigned long m_PreviousThrottleRCValue;
+    // throttle value stored from pulseIn read mPreviousThrottleDelay
+    unsigned long mPreviousThrottleRCValue;
 
     // steering null value read from pulseIn
-    unsigned long m_RCSteeringNullValue;
+    unsigned long mRCSteeringNullValue;
 
     // steering value read from pulseIn
-    unsigned long m_RCSteeringValue;
+    unsigned long mRCSteeringValue;
 
     // timestamp when the pins were read the last time in milli seconds
-    unsigned long m_LastReadTimestamp;
+    unsigned long mLastReadTimestamp;
 
     // timestamp when the last acceleration was calculated milli seconds
-    unsigned long m_LastAccelerationTimestamp;
+    unsigned long mLastAccelerationTimestamp;
 
     // is false at start and true after system is calibrated
-    bool m_IsCalibrated;
+    bool mIsCalibrated;
 
     // pin used for pwm input for throttle
-    int m_PinThrottle;
+    int mPinThrottle;
 
     // pin used for pwm input for steering
-    int m_PinSteering;
+    int mPinSteering;
 
 };
 

@@ -1,0 +1,3 @@
+[submodule "rccarswitches"]
+	path = rccarswitches
+	url = git@github.com:Schorsch0815/rccarswitches.git

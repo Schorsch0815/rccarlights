@@ -22,8 +22,8 @@
 #define LIGHTSWITCHBEHAVIOUR_H_
 
 /**
- * class to change the bahaviour of the light switching. The base class will react as a normal switch.
- * But sublassing allows to implement different behaviours like dim on/off or flicking like xenon lights.
+ * class to change the behavior of the light switching. The base class will react as a normal switch.
+ * But subclassing allows to implement different behaviors like dim on/off or flicking like xenon lights.
  */
 class LightSwitchBehaviour
 {
@@ -37,7 +37,7 @@ public:
     } LightStatus_t;
 
     /**
-     * contructor
+     * constructor
      */
     LightSwitchBehaviour();
 
@@ -47,7 +47,7 @@ public:
     virtual ~LightSwitchBehaviour();
 
     /**
-     * sets the lights status of the behaviour. Can be overloaded by subclass to ad additional functionality. Every subclass has to call {@link #setLightStatusSelf}.
+     * sets the lights status of the behavior. Can be overloaded by subclass to ad additional functionality. Every subclass has to call {@link #setLightStatusSelf}.
      *
      * @param pLightStatus desired status of the controlled light
      */
@@ -59,11 +59,11 @@ public:
      */
     LightStatus_t getLightStatus( void )
     {
-        return m_LightStatus;
+        return mLightStatus;
     }
 
     /**
-     * @return the bright of the lights controlled by the behaviour
+     * @return the bright of the lights controlled by the behavior
      */
     virtual unsigned short getBrightness( void ) = 0;
 
@@ -76,7 +76,7 @@ protected:
      */
     inline void setLightStatusSelf(LightStatus_t pLightStatus)
     {
-        m_LightStatus = pLightStatus;
+        mLightStatus = pLightStatus;
     }
 
 private:
@@ -84,7 +84,7 @@ private:
     /**
      * light status
      */
-    LightStatus_t m_LightStatus;
+    LightStatus_t mLightStatus;
 
 };
 

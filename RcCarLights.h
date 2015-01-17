@@ -66,22 +66,22 @@ private:
     const long BREAK_ACCELERATION_LEVEL = -20;
 
     // flag if light is switched is currently pressed (needed to suppress toggling the lights)
-    bool m_isLightSwitchPressed;
+    bool misLightSwitchPressed;
 
     // timestamp when brake lights are switched on
-    long m_BrakeLightsOnTimestamp;
+    long mBrakeLightsOnTimestamp;
 
     // last timestamp then blinker was switched on or off
-    long m_LastBlinkTimestamp;
+    long mLastBlinkTimestamp;
 
     // is true if blinker is switched on, false otherwise
-    bool m_isBlinkingOn;
+    bool misBlinkingOn;
 
-    RemoteControlCarAdapter m_RemoteControlCarAdapter;
+    RemoteControlCarAdapter mRemoteControlCarAdapter;
 
-    SimpleRcCarLightController m_LightController;
+    SimpleRcCarLightController mLightController;
 
-    AbstractRcCarLightController::LightStatus_t m_LightStatus;
+    AbstractRcCarLightController::LightStatus_t mLightStatus;
 };
 
 #endif

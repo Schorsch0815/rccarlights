@@ -30,58 +30,58 @@
  *
  * Initialize the adapter with the start values.
  *
- * @param pinThrottle specifies the arduino board pin number used for throttle
+ * @param pPinThrottle specifies the arduino board pin number used for throttle
  * @param pThrottleReverse
- * @param pinSteering specifies the arduino board pin number used for steering
+ * @param pPinSteering specifies the arduino board pin number used for steering
  */
-RemoteControlCarAdapter::RemoteControlCarAdapter(int pinThrottle, bool pThrottleReverse, int pinSteering)
+RemoteControlCarAdapter::RemoteControlCarAdapter(int pPinThrottle, bool pThrottleReverse, int pPinSteering)
 {
     // store pins used for input
-    m_PinThrottle = pinThrottle;
-    m_PinSteering = pinSteering;
+    mPinThrottle = pPinThrottle;
+    mPinSteering = pPinSteering;
 
-    m_ThrottleReverse = pThrottleReverse;
-
-    // let's start with 0, 0 means uninitialized
-    m_RCThrottleNullValue = 0;
-    m_RCThrottleValue = 0;
-    m_PreviousThrottleRCValue = 0;
+    mThrottleReverse = pThrottleReverse;
 
     // let's start with 0, 0 means uninitialized
-    m_RCSteeringNullValue = 0;
-    m_RCSteeringValue = 0;
+    mRCThrottleNullValue = 0;
+    mRCThrottleValue = 0;
+    mPreviousThrottleRCValue = 0;
+
+    // let's start with 0, 0 means uninitialized
+    mRCSteeringNullValue = 0;
+    mRCSteeringValue = 0;
 
     // Engine is stopped at start
-    m_Throttle = STOP;
+    mThrottle = STOP;
 
     // duration of current throttle is max
-    m_DurationOfThrottle = 0;
+    mDurationOfThrottle = 0;
 
     // Position for throttle switch is STOP
-    m_ThrottleSwitch = STOP;
+    mThrottleSwitch = STOP;
 
     // duration of current switch is max
-    m_DurationOfThrottleSwitch = 0;
+    mDurationOfThrottleSwitch = 0;
 
     // give the steering
-    m_Steering = NEUTRAL;
+    mSteering = NEUTRAL;
 
     // Position for steering switch is NEUTRAL
-    m_SteeringSwitch = NEUTRAL;
+    mSteeringSwitch = NEUTRAL;
 
     // duration of current switch is max
-    m_DurationOfSteeringSwitch = 0;
+    mDurationOfSteeringSwitch = 0;
 
     // no acceleration at start
-    m_Acceleration = 0;
+    mAcceleration = 0;
 
-    m_LastAccelerationTimestamp = 0;
+    mLastAccelerationTimestamp = 0;
 
     //
-    m_LastReadTimestamp = 0L;
+    mLastReadTimestamp = 0L;
 
     // do calibration first
-    m_IsCalibrated = false;
+    mIsCalibrated = false;
 }
 
 /**
@@ -92,8 +92,8 @@ RemoteControlCarAdapter::RemoteControlCarAdapter(int pinThrottle, bool pThrottle
  */
 void RemoteControlCarAdapter::setupPins(void)
 {
-    pinMode(m_PinThrottle, INPUT);
-    pinMode(m_PinSteering, INPUT);
+    pinMode(mPinThrottle, INPUT);
+    pinMode(mPinSteering, INPUT);
 }
 
 /**
@@ -103,10 +103,12 @@ void RemoteControlCarAdapter::calibrate(void)
 {
     Serial.println("calibrate");
 
+    // TODO check if we should implement a real calibrating functionality (check max throttle and steering values from
+    // remote control)
     if (!isCalibrated())
     {
-        m_RCThrottleNullValue = 0;
-        m_RCSteeringNullValue = 0;
+        mRCThrottleNullValue = 0;
+        mRCSteeringNullValue = 0;
 
         // delay calibration to allow remote controller to initialize
         delay(200);
@@ -114,128 +116,167 @@ void RemoteControlCarAdapter::calibrate(void)
         for (int i = 0; i < NUM_CALIBRATION_ITERATION; ++i)
         {
             delay(10);
-            m_LastReadTimestamp = readInputs();
-            m_RCThrottleNullValue += m_RCThrottleValue;
-            m_RCSteeringNullValue += m_RCSteeringValue;
+            mLastReadTimestamp = readInputs();
+            mRCThrottleNullValue += mRCThrottleValue;
+            mRCSteeringNullValue += mRCSteeringValue;
         }
 
-        m_RCThrottleNullValue /= NUM_CALIBRATION_ITERATION;
-        m_RCSteeringNullValue /= NUM_CALIBRATION_ITERATION;
+        mRCThrottleNullValue /= NUM_CALIBRATION_ITERATION;
+        mRCSteeringNullValue /= NUM_CALIBRATION_ITERATION;
 
-        m_PreviousThrottleRCValue = m_RCThrottleValue;
+        mPreviousThrottleRCValue = mRCThrottleValue;
 
-        m_Acceleration = 0;
-        m_LastAccelerationTimestamp = m_LastReadTimestamp;
+        mAcceleration = 0;
+        mLastAccelerationTimestamp = mLastReadTimestamp;
 
-        m_IsCalibrated = true;
+        mIsCalibrated = true;
 
         Serial.println("\nCalibration done.");
-        Serial.print("   m_PreviousThrottleRCValue: ");
-        Serial.print(m_PreviousThrottleRCValue);
-        Serial.print("   m_RCThrottleNullValue: ");
-        Serial.print(m_RCThrottleNullValue);
-        Serial.print("  m_RCSteeringNullValue: ");
-        Serial.print(m_RCSteeringNullValue);
+        Serial.print("   mPreviousThrottleRCValue: ");
+        Serial.print(mPreviousThrottleRCValue);
+        Serial.print("   mRCThrottleNullValue: ");
+        Serial.print(mRCThrottleNullValue);
+        Serial.print("  mRCSteeringNullValue: ");
+        Serial.print(mRCSteeringNullValue);
     }
 }
 
-unsigned long RemoteControlCarAdapter::determineDuration(unsigned long oldDuration, unsigned long oldValue,
-                                                         unsigned long newValue, unsigned long lDeltaT)
+/**
+ * Determines duration of a remote control signal based on the old and the new value of the signal. If the values are
+ * equal the last duration is increased by the passed delta. otherwise it's set to 0.
+ *
+ * @param pOldValue old value of the signal
+ * @param pNewValue new value of the signal
+ * @param pPreviousDuration previous duration in milliseconds from last measurement
+ * @param pDeltaT time in milliseconds passed since last measurement
+ *
+ * @return new duration in milliseconds
+ */
+unsigned long RemoteControlCarAdapter::determineDuration(int pOldValue, int pNewValue, unsigned long pPreviousDuration,
+                                                         unsigned long pDeltaT)
 {
     // handle/increase duration
-    if (oldValue != newValue)
+    if (pOldValue != pNewValue)
     {
         return 0;
     }
     else
     {
-        return oldDuration + lDeltaT;
+        return pPreviousDuration + pDeltaT;
     }
 }
 
-void RemoteControlCarAdapter::refreshThrottle(long lDeltaT)
+/**
+ * refreshes the current throttle status from the throttle channel. Status can be FORWARD, STOP and BACKWARD. In case the
+ * status has changed the duration was reseted to zero, otherwise it will be increased.
+ * @param pDeltaT in milliseconds between last refresh and current refresh
+ */
+void RemoteControlCarAdapter::refreshThrottle(unsigned long pDeltaT)
 {
     // determine current throttle
     Throttle_t newThrottle = calculateThrottle();
     // handle/increase duration of throttle position
-    m_DurationOfThrottle = determineDuration(m_DurationOfThrottle, m_Throttle, newThrottle, lDeltaT);
-    m_Throttle = newThrottle;
+    mDurationOfThrottle = determineDuration(mThrottle, newThrottle, mDurationOfThrottle, pDeltaT);
+    mThrottle = newThrottle;
 }
 
-void RemoteControlCarAdapter::refreshThrottleSwitch(long lDeltaT)
+/**
+ * refreshes the current throttle switch status from the throttle channel. Status can be FORWARD, STOP and BACKWARD. In case the
+ * status has changed the duration was reseted to zero, otherwise it will be increased.
+ * @param pDeltaT in milliseconds between last refresh and current refresh
+ */
+void RemoteControlCarAdapter::refreshThrottleSwitch(unsigned long pDeltaT)
 {
     // determine current throttle switch
     Throttle_t newThrottleSwitch = calculateThrottleSwitch();
     // handle/increase duration of throttle position
-    m_DurationOfThrottleSwitch = determineDuration(m_DurationOfThrottleSwitch, m_ThrottleSwitch, newThrottleSwitch,
-                                                   lDeltaT);
-    m_ThrottleSwitch = newThrottleSwitch;
+    mDurationOfThrottleSwitch = determineDuration(mThrottleSwitch, newThrottleSwitch, mDurationOfThrottleSwitch,
+                                                  pDeltaT);
+    mThrottleSwitch = newThrottleSwitch;
 }
 
-void RemoteControlCarAdapter::refreshSteeringSwitch(long lDeltaT)
+/**
+ * refreshes the current steering switch status from the throttle channel. Status can be FORWARD, STOP and BACKWARD. In case the
+ * status has changed the duration was reseted to zero, otherwise it will be increased.
+ * @param pDeltaT in milliseconds between last refresh and current refresh
+ */
+void RemoteControlCarAdapter::refreshSteeringSwitch(unsigned long pDeltaT)
 {
     // determine current throttle switch
     Steering_t newSteeringSwitch = calculateSteeringSwitch();
     // handle/increase duration of throttle position
-    m_DurationOfSteeringSwitch = determineDuration(m_DurationOfSteeringSwitch, m_SteeringSwitch, newSteeringSwitch,
-                                                   lDeltaT);
-    m_SteeringSwitch = newSteeringSwitch;
+    mDurationOfSteeringSwitch = determineDuration(mSteeringSwitch, newSteeringSwitch, mDurationOfSteeringSwitch,
+                                                  pDeltaT);
+    mSteeringSwitch = newSteeringSwitch;
 }
 
-void RemoteControlCarAdapter::refreshAcceleration(long lDeltaT)
+/**
+ * refreshes the acceleration attribute from the remote control throttle setting. For measurement of the acceleration an individual
+ * acceleration interval is used. The current acceleration value is calculated as a difference between the current throttle and
+ * the throttle value from the last acceleration measuring point. The sign of the value is negative when the car slows down,
+ * independent if car is moving forward or backward.
+ * @param pDeltaT  in milliseconds between last refresh and current refresh
+ */
+void RemoteControlCarAdapter::refreshAcceleration(unsigned long pDeltaT)
 {
-    if (ACCELERATION_MEASURE_INTERVAL < m_LastReadTimestamp + lDeltaT - m_LastAccelerationTimestamp)
+    if (ACCELERATION_MEASURE_INTERVAL < mLastReadTimestamp + pDeltaT - mLastAccelerationTimestamp)
     {
-        m_Acceleration = (m_RCThrottleValue - m_PreviousThrottleRCValue) *calcAccelerationFactor();
-        m_PreviousThrottleRCValue = m_RCThrottleValue;
-        m_LastAccelerationTimestamp = m_LastReadTimestamp + lDeltaT;
+        mAcceleration = (mPreviousThrottleRCValue - mRCThrottleValue) * calcAccelerationFactor();
+        mPreviousThrottleRCValue = mRCThrottleValue;
+        mLastAccelerationTimestamp = mLastReadTimestamp + pDeltaT;
     }
 }
 
+/**
+ * returns a factor to correct the algebraic sign of the acceleration value. In case the car moves forward, it returns -1 if
+ * car moves backwards it returns 1 otherwise 0.
+ * @return the acceleration factor (-1, 0 or 1)
+ */
 int RemoteControlCarAdapter::calcAccelerationFactor()
 {
-    if ((m_ThrottleReverse ? BACKWARD : FORWARD) == m_Throttle)
-    {
-        return -1;
-    }
-    else if ((m_ThrottleReverse ? FORWARD : BACKWARD) == m_Throttle)
+    if ((mThrottleReverse ? BACKWARD : FORWARD) == mThrottle)
     {
         return 1;
+    }
+    else if ((mThrottleReverse ? FORWARD : BACKWARD) == mThrottle)
+    {
+        return -1;
     }
     return 0;
 }
 
 /**
- *
+ * refresh the values for throttle and steering from remote controller and calculate
+ * all dependent values like, switch position for throttle and steering, acceleration, etc
  */
 void RemoteControlCarAdapter::refresh(void)
 {
 //    Serial.println("refresh");
 
-if (!isCalibrated())
-    calibrate();
+    if (!isCalibrated())
+        calibrate();
 
-long lReadTimestamp = readInputs();
+    unsigned long lReadTimestamp = readInputs();
 
-long lDeltaT = lReadTimestamp - m_LastReadTimestamp;
+    unsigned long lDeltaT = lReadTimestamp - mLastReadTimestamp;
 
 // determine acceleration
-refreshAcceleration(lDeltaT);
+    refreshAcceleration(lDeltaT);
 
 // determine current throttle
-refreshThrottle(lDeltaT);
+    refreshThrottle(lDeltaT);
 
 // determine current throttle switch
-refreshThrottleSwitch(lDeltaT);
+    refreshThrottleSwitch(lDeltaT);
 
 // determine current throttle
-m_Steering = calculateSteering();
+    mSteering = calculateSteering();
 
 // determine current throttle switch
-refreshSteeringSwitch(lDeltaT);
+    refreshSteeringSwitch(lDeltaT);
 
 // store timestamp from current input read
-m_LastReadTimestamp = lReadTimestamp;
+    mLastReadTimestamp = lReadTimestamp;
 }
 
 /**
@@ -246,74 +287,92 @@ m_LastReadTimestamp = lReadTimestamp;
  */
 unsigned long RemoteControlCarAdapter::readInputs(void)
 {
-m_RCThrottleValue = pulseIn(m_PinThrottle, HIGH, 20000);
-m_RCSteeringValue = pulseIn(m_PinSteering, HIGH, 20000);
+    mRCThrottleValue = pulseIn(mPinThrottle, HIGH, 20000);
+    mRCSteeringValue = pulseIn(mPinSteering, HIGH, 20000);
 
 //#ifdef DEBUG
 //    Serial.print ("\nThrottle value: ");
-//    Serial.print (m_RCThrottleValue);
+//    Serial.print (mRCThrottleValue);
 //    Serial.print ("    Steering value: ");
-//    Serial.println (m_RCSteeringValue);
+//    Serial.println (mRCSteeringValue);
 //#endif
 
-return millis();
+    return millis();
 }
 
+/**
+ *
+ * @return current throttle value (FORWARD, STOP or BACKWARD)
+ */
 RemoteControlCarAdapter::Throttle_t RemoteControlCarAdapter::calculateThrottle(void)
 {
-if (m_RCThrottleNullValue + EPLSILON_NULL_THROTTLE < m_RCThrottleValue)
-    return (m_ThrottleReverse ? FORWARD : BACKWARD);
-else if (m_RCThrottleNullValue - EPLSILON_NULL_THROTTLE > m_RCThrottleValue)
-    return (m_ThrottleReverse ? BACKWARD : FORWARD);
-else
+    if (mRCThrottleNullValue + EPLSILON_NULL_THROTTLE < mRCThrottleValue)
+        return (mThrottleReverse ? FORWARD : BACKWARD);
+    else if (mRCThrottleNullValue - EPLSILON_NULL_THROTTLE > mRCThrottleValue)
+        return (mThrottleReverse ? BACKWARD : FORWARD);
+    else
+        return STOP;
+}
+
+/**
+ *
+ * @return current throttle switch value (FORWARD, STOP, BACKWARD or UNDEFINED_THROTTLE if throttle value is
+ * out of throttle switch range)
+ */
+RemoteControlCarAdapter::Throttle_t RemoteControlCarAdapter::calculateThrottleSwitch(void)
+{
+    if (mRCThrottleValue < mRCThrottleNullValue - DELTA_THROTTLE_SWITCH
+            || mRCThrottleNullValue + DELTA_THROTTLE_SWITCH < mRCThrottleValue)
+    {
+        return UNDEFINED_THROTTLE;
+    }
+    else if (mRCThrottleNullValue + EPLSILON_NULL_THROTTLE < mRCThrottleValue)
+    {
+        return (mThrottleReverse ? FORWARD : BACKWARD);
+    }
+    else if (mRCThrottleNullValue - EPLSILON_NULL_THROTTLE > mRCThrottleValue)
+    {
+        return (mThrottleReverse ? BACKWARD : FORWARD);
+    }
+
     return STOP;
 }
 
-RemoteControlCarAdapter::Throttle_t RemoteControlCarAdapter::calculateThrottleSwitch(void)
-{
-if (m_RCThrottleValue < m_RCThrottleNullValue - DELTA_THROTTLE_SWITCH
-        || m_RCThrottleNullValue + DELTA_THROTTLE_SWITCH < m_RCThrottleValue)
-{
-    return UNDEFINED_THROTTLE;
-}
-else if (m_RCThrottleNullValue + EPLSILON_NULL_THROTTLE < m_RCThrottleValue)
-{
-    return (m_ThrottleReverse ? FORWARD : BACKWARD);
-}
-else if (m_RCThrottleNullValue - EPLSILON_NULL_THROTTLE > m_RCThrottleValue)
-{
-    return (m_ThrottleReverse ? BACKWARD : FORWARD);
-}
-
-return STOP;
-}
-
+/**
+ *
+ * @return current steering value (LEFT, NEUTRAL or RIGHT)
+ */
 RemoteControlCarAdapter::Steering_t RemoteControlCarAdapter::calculateSteering(void)
 {
-if (m_RCSteeringNullValue + EPLSILON_NULL_STEERING < m_RCSteeringValue)
-    return LEFT;
-else if (m_RCSteeringNullValue - EPLSILON_NULL_STEERING > m_RCSteeringValue)
-    return RIGHT;
-else
-    return NEUTRAL;
+    if (mRCSteeringNullValue + EPLSILON_NULL_STEERING < mRCSteeringValue)
+        return LEFT;
+    else if (mRCSteeringNullValue - EPLSILON_NULL_STEERING > mRCSteeringValue)
+        return RIGHT;
+    else
+        return NEUTRAL;
 }
 
+/**
+ *
+ * @return current steering switch value (LEFT, NEUTRAL, RIGHT or UNDEFINED_STEERING if steering value is
+ * out of steering switch range)
+ */
 RemoteControlCarAdapter::Steering_t RemoteControlCarAdapter::calculateSteeringSwitch(void)
 {
-if (m_RCSteeringValue < m_RCSteeringNullValue - DELTA_STEERING_SWITCH
-        || m_RCSteeringNullValue + DELTA_STEERING_SWITCH < m_RCSteeringValue)
-{
-    return UNDEFINED_STEERING;
-}
-else if (m_RCSteeringNullValue + EPLSILON_NULL_STEERING < m_RCSteeringValue)
-{
-    return LEFT;
-}
-else if (m_RCSteeringNullValue - EPLSILON_NULL_STEERING > m_RCSteeringValue)
-{
-    return RIGHT;
-}
+    if (mRCSteeringValue < mRCSteeringNullValue - DELTA_STEERING_SWITCH
+            || mRCSteeringNullValue + DELTA_STEERING_SWITCH < mRCSteeringValue)
+    {
+        return UNDEFINED_STEERING;
+    }
+    else if (mRCSteeringNullValue + EPLSILON_NULL_STEERING < mRCSteeringValue)
+    {
+        return LEFT;
+    }
+    else if (mRCSteeringNullValue - EPLSILON_NULL_STEERING > mRCSteeringValue)
+    {
+        return RIGHT;
+    }
 
-return NEUTRAL;
+    return NEUTRAL;
 }
 

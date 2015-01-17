@@ -23,16 +23,16 @@
 //#include <Adafruit_NeoPixel.h>
 #include "RcCarLights.h"
 
-RcCarLights g_RcCarLights;
+RcCarLights gRcCarLights;
 
 //The setup function is called once at startup of the sketch
 void setup()
 {
-    g_RcCarLights.setup();
+    gRcCarLights.setup();
 }
 
 // The loop function is called in an endless loop
 void loop()
 {
-    g_RcCarLights.loop();
+    gRcCarLights.loop();
 }
