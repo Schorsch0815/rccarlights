@@ -21,8 +21,6 @@
 #ifndef SIMPLERCCARLIGHTCONTROLLER_H_
 #define SIMPLERCCARLIGHTCONTROLLER_H_
 
-#include "Arduino.h"
-
 #include "AbstractRcCarLightController.h"
 #include "LightSwitchBehaviour.h"
 
@@ -57,10 +55,10 @@ public:
     void setupPins(void);
 
     /**
-     * allows to add a behaviour for a specifc light type. The SimpleRcCarLightControllor only support a behaviour for the headlights.
+     * allows to add a behavior for a specific light type. The SimpleRcCarLightControllor only support a behavior for the headlights.
      *
-     * @param pLightType lights type where a behaviour should be assigned
-     * @param pLightSwitchBehaviour behaviour, which influences the light switching
+     * @param pLightType lights type where a behavior should be assigned
+     * @param pLightSwitchBehaviour behavior, which influences the light switching
      */
     void addBehaviour(LightType_t pLightType, LightSwitchBehaviour *pLightSwitchBehaviour);
 
@@ -71,24 +69,24 @@ public:
 
 private:
     // pin for parking lights
-    int m_PinParkingLight;
+    int mPinParkingLight;
 
     // pin for headlights
-    int m_PinHeadlight;
+    int mPinHeadlight;
 
     // pin for right blinker
-    int m_PinRightBlinker;
+    int mPinRightBlinker;
 
     // pin for left blinker
-    int m_PinLeftBlinker;
+    int mPinLeftBlinker;
 
     // pin for backup lights
-    int m_PinBackUpLight;
+    int mPinBackUpLight;
 
     // pin or brake lights
-    int m_PinBrakeLight;
+    int mPinBrakeLight;
 
-    LightSwitchBehaviour *m_headlightBehaviour;
+    LightSwitchBehaviour *mheadlightBehaviour;
 };
 
 #endif /* SIMPLERCCARLIGHTCONTROLLER_H_ */

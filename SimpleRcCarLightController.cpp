@@ -18,6 +18,8 @@
  *
  * --------------------------------------------------------------------*/
 
+#include "Arduino.h"
+
 #include "SimpleRcCarLightController.h"
 #include "XenonLightSwitchBehaviour.h"
 
@@ -34,14 +36,14 @@
 SimpleRcCarLightController::SimpleRcCarLightController(int pPinParkingLight, int pPinHeadlight, int pPinRightBlinker,
                                                int pPinLeftBlinker, int pPinBackUpLight, int pPinBrakeLight)
 {
-    m_PinParkingLight = pPinParkingLight;
-    m_PinHeadlight = pPinHeadlight;
-    m_PinRightBlinker = pPinRightBlinker;
-    m_PinLeftBlinker = pPinLeftBlinker;
-    m_PinBackUpLight = pPinBackUpLight;
-    m_PinBrakeLight = pPinBrakeLight;
+    mPinParkingLight = pPinParkingLight;
+    mPinHeadlight = pPinHeadlight;
+    mPinRightBlinker = pPinRightBlinker;
+    mPinLeftBlinker = pPinLeftBlinker;
+    mPinBackUpLight = pPinBackUpLight;
+    mPinBrakeLight = pPinBrakeLight;
 
-    m_headlightBehaviour = NULL;
+    mheadlightBehaviour = NULL;
 }
 
 /**
@@ -51,12 +53,12 @@ SimpleRcCarLightController::SimpleRcCarLightController(int pPinParkingLight, int
  */
 void SimpleRcCarLightController::setupPins(void)
 {
-    pinMode(m_PinParkingLight, OUTPUT);
-    pinMode(m_PinHeadlight, OUTPUT);
-    pinMode(m_PinRightBlinker, OUTPUT);
-    pinMode(m_PinLeftBlinker, OUTPUT);
-    pinMode(m_PinBackUpLight, OUTPUT);
-    pinMode(m_PinBrakeLight, OUTPUT);
+    pinMode(mPinParkingLight, OUTPUT);
+    pinMode(mPinHeadlight, OUTPUT);
+    pinMode(mPinRightBlinker, OUTPUT);
+    pinMode(mPinLeftBlinker, OUTPUT);
+    pinMode(mPinBackUpLight, OUTPUT);
+    pinMode(mPinBrakeLight, OUTPUT);
 }
 
 void SimpleRcCarLightController::addBehaviour(LightType_t pLightType, LightSwitchBehaviour *pLightSwitchBehaviour)
@@ -64,7 +66,7 @@ void SimpleRcCarLightController::addBehaviour(LightType_t pLightType, LightSwitc
     // only for headlights a special behaviour was supported by this controller
     if (HEADLIGHT == pLightType)
     {
-        m_headlightBehaviour = pLightSwitchBehaviour;
+        mheadlightBehaviour = pLightSwitchBehaviour;
     }
 }
 
@@ -75,21 +77,21 @@ void SimpleRcCarLightController::addBehaviour(LightType_t pLightType, LightSwitc
  */
 void SimpleRcCarLightController::loop(LightStatus_t pLightStatus)
 {
-    digitalWrite(m_PinParkingLight, pLightStatus.parkingLight ? HIGH : LOW);
+    digitalWrite(mPinParkingLight, pLightStatus.parkingLight ? HIGH : LOW);
 
-    if (m_headlightBehaviour)
+    if (mheadlightBehaviour)
     {
-        m_headlightBehaviour->setLightStatus(pLightStatus.headlight ? LightSwitchBehaviour::ON : LightSwitchBehaviour::OFF);
-        analogWrite(m_PinHeadlight, m_headlightBehaviour->getBrightness() * 2.55);
+        mheadlightBehaviour->setLightStatus(pLightStatus.headlight ? LightSwitchBehaviour::ON : LightSwitchBehaviour::OFF);
+        analogWrite(mPinHeadlight, mheadlightBehaviour->getBrightness() * 2.55);
     }
     else
     {
-        digitalWrite(m_PinHeadlight, pLightStatus.headlight ? HIGH : LOW);
+        digitalWrite(mPinHeadlight, pLightStatus.headlight ? HIGH : LOW);
     }
 
-    digitalWrite(m_PinBrakeLight, pLightStatus.brakeLight ? HIGH : LOW);
-    digitalWrite(m_PinBackUpLight, pLightStatus.backUpLight ? HIGH : LOW);
+    digitalWrite(mPinBrakeLight, pLightStatus.brakeLight ? HIGH : LOW);
+    digitalWrite(mPinBackUpLight, pLightStatus.backUpLight ? HIGH : LOW);
 
-    digitalWrite(m_PinRightBlinker, pLightStatus.rightBlinker ? HIGH : LOW);
-    digitalWrite(m_PinLeftBlinker, pLightStatus.leftBlinker ? HIGH : LOW);
+    digitalWrite(mPinRightBlinker, pLightStatus.rightBlinker ? HIGH : LOW);
+    digitalWrite(mPinLeftBlinker, pLightStatus.leftBlinker ? HIGH : LOW);
 }

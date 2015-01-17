@@ -25,7 +25,7 @@
  */
 LightSwitchBehaviour::LightSwitchBehaviour()
 {
-    m_LightStatus = OFF;
+    mLightStatus = OFF;
 }
 
 /**
