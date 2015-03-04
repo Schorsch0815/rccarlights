@@ -39,7 +39,7 @@ public:
      * @param pinThrottle defines the (digital) arduino pin, which is used to read the throttle channel
      * @param pinSteering defines the (digital) arduino pin, which is used to read the steering value
      */
-    RemoteControlCarAdapter(int pinThrottle, bool pThrottleReverse, int pinSteering);
+    RemoteControlCarAdapter(int pinThrottle, bool pThrottleReverse, int pinSteering, int pPin3rdChannel);
 
     /**
      * configure the arduino board to use specified pins for throttle and steering
@@ -121,6 +121,11 @@ public:
      return mDurationOfStop;
      }
      */
+
+    inline unsigned long get3rdChannelValue(void)
+    {
+        return mRC3rdChannelValue;
+    }
 
 private:
     /**
@@ -282,6 +287,8 @@ private:
     // steering value read from pulseIn
     unsigned long mRCSteeringValue;
 
+    unsigned long mRC3rdChannelValue;
+
     // timestamp when the pins were read the last time in milli seconds
     unsigned long mLastReadTimestamp;
 
@@ -296,6 +303,9 @@ private:
 
     // pin used for pwm input for steering
     int mPinSteering;
+
+    // pin used for pwm input for 3rd channel (emergency bar)
+    int mPin3rdChannel;
 
 };
 
