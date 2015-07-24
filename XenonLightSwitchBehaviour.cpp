@@ -80,7 +80,7 @@ INTERPOLATION_POINT_t sXenonSwitchOff[NUM_XENON_OFF_INTERPOLATION_STEPS] =
                        110, 10
                 },
                 {
-                       300, 0
+                       500, 0
                 }
         };
 

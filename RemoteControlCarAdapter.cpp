@@ -34,54 +34,30 @@
  * @param pThrottleReverse
  * @param pPinSteering specifies the arduino board pin number used for steering
  */
-RemoteControlCarAdapter::RemoteControlCarAdapter(int pPinThrottle, bool pThrottleReverse, int pPinSteering)
+RemoteControlCarAdapter::RemoteControlCarAdapter(int pPinThrottle, bool pThrottleReverse, int pPinSteering,
+                                                 int pPin3rdChannel) :
+        mThrottle(STOP), // Engine is stopped at start
+        mThrottleReverse(pThrottleReverse), // controls, whether throttle channel is reverse or not
+        mDurationOfThrottle(0), // duration of current throttle is 0
+        mThrottleSwitch(STOP), // Position for throttle switch is STOP
+        mDurationOfThrottleSwitch(0), // duration of current switch is 0
+        mSteering(NEUTRAL), // Position for steering is NEUTRAL
+        mSteeringSwitch(NEUTRAL), // Position for steering switch is NEUTRAL
+        mDurationOfSteeringSwitch(0), // duration of current switch is 0
+        mAcceleration(0), // no acceleration at start
+        mRCThrottleNullValue(0), // Let's start with 0, 0 means uninitialized
+        mRCThrottleValue(0), //
+        mPreviousThrottleRCValue(0), //
+        mRCSteeringNullValue(0), // let's start with 0, 0 means uninitialized
+        mRCSteeringValue(0), //
+        mRC3rdChannelValue(0), //
+        mLastReadTimestamp(0L), //
+        mLastAccelerationTimestamp(0L), //
+        mIsCalibrated(false), //
+        mPinThrottle(pPinThrottle), // store pins used for input
+        mPinSteering(pPinSteering), //store pins used for input
+        mPin3rdChannel(pPin3rdChannel) // third channel used for emergency bar
 {
-    // store pins used for input
-    mPinThrottle = pPinThrottle;
-    mPinSteering = pPinSteering;
-
-    mThrottleReverse = pThrottleReverse;
-
-    // let's start with 0, 0 means uninitialized
-    mRCThrottleNullValue = 0;
-    mRCThrottleValue = 0;
-    mPreviousThrottleRCValue = 0;
-
-    // let's start with 0, 0 means uninitialized
-    mRCSteeringNullValue = 0;
-    mRCSteeringValue = 0;
-
-    // Engine is stopped at start
-    mThrottle = STOP;
-
-    // duration of current throttle is max
-    mDurationOfThrottle = 0;
-
-    // Position for throttle switch is STOP
-    mThrottleSwitch = STOP;
-
-    // duration of current switch is max
-    mDurationOfThrottleSwitch = 0;
-
-    // give the steering
-    mSteering = NEUTRAL;
-
-    // Position for steering switch is NEUTRAL
-    mSteeringSwitch = NEUTRAL;
-
-    // duration of current switch is max
-    mDurationOfSteeringSwitch = 0;
-
-    // no acceleration at start
-    mAcceleration = 0;
-
-    mLastAccelerationTimestamp = 0;
-
-    //
-    mLastReadTimestamp = 0L;
-
-    // do calibration first
-    mIsCalibrated = false;
 }
 
 /**
@@ -94,6 +70,7 @@ void RemoteControlCarAdapter::setupPins(void)
 {
     pinMode(mPinThrottle, INPUT);
     pinMode(mPinSteering, INPUT);
+    pinMode(mPin3rdChannel, INPUT);
 }
 
 /**
@@ -101,7 +78,9 @@ void RemoteControlCarAdapter::setupPins(void)
  */
 void RemoteControlCarAdapter::calibrate(void)
 {
+#ifdef DEBUG
     Serial.println("calibrate");
+#endif
 
     // TODO check if we should implement a real calibrating functionality (check max throttle and steering values from
     // remote control)
@@ -131,6 +110,7 @@ void RemoteControlCarAdapter::calibrate(void)
 
         mIsCalibrated = true;
 
+#ifdef DEBUG
         Serial.println("\nCalibration done.");
         Serial.print("   mPreviousThrottleRCValue: ");
         Serial.print(mPreviousThrottleRCValue);
@@ -138,6 +118,7 @@ void RemoteControlCarAdapter::calibrate(void)
         Serial.print(mRCThrottleNullValue);
         Serial.print("  mRCSteeringNullValue: ");
         Serial.print(mRCSteeringNullValue);
+#endif
     }
 }
 
@@ -251,8 +232,6 @@ int RemoteControlCarAdapter::calcAccelerationFactor()
  */
 void RemoteControlCarAdapter::refresh(void)
 {
-//    Serial.println("refresh");
-
     if (!isCalibrated())
         calibrate();
 
@@ -289,6 +268,7 @@ unsigned long RemoteControlCarAdapter::readInputs(void)
 {
     mRCThrottleValue = pulseIn(mPinThrottle, HIGH, 20000);
     mRCSteeringValue = pulseIn(mPinSteering, HIGH, 20000);
+    mRC3rdChannelValue = pulseIn(mPin3rdChannel, HIGH, 20000);
 
 //#ifdef DEBUG
 //    Serial.print ("\nThrottle value: ");

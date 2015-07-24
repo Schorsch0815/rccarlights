@@ -29,13 +29,18 @@ const int gPinThrottle = 7;
 // pin 8 for pwm input
 const int gPinSteering = 8;
 
+// pin 9 for pwm input
+const int gPin3rdChannel = 9;
+
 const int gPinParkingLight = 2;
 const int gPinHeadingLight = 3;
-const int gPinBreakLight = 4;
-const int gPinBackUpLight = 5;
+const int gPinNeoPixel = 4;
 
-const int gPinRightBlinker = 9;
-const int gPinLeftBlinker = 10;
+const int gPinEmergencyLightSwitch = 10;
+const int gPinSireneSwitch = 11;
+const int gPinTrafficBarSwitch = 12;
+
+//#define DEBUG 0
 
 #define THROTTLE_REVERSE    true
 XenonLightSwitchBehaviour gHeadlightBehaviour;
@@ -44,9 +49,12 @@ XenonLightSwitchBehaviour gHeadlightBehaviour;
  * Constructor
  */
 RcCarLights::RcCarLights() :
-        mRemoteControlCarAdapter(gPinThrottle, THROTTLE_REVERSE, gPinSteering), mLightController(gPinParkingLight, gPinHeadingLight,
-                                                                             gPinRightBlinker, gPinLeftBlinker,
-                                                                             gPinBackUpLight, gPinBreakLight)
+        mRemoteControlCarAdapter(gPinThrottle, THROTTLE_REVERSE, gPinSteering, gPin3rdChannel), mLightController(
+                gPinParkingLight, gPinHeadingLight, gPinNeoPixel), mLightSwitch(lightSwitchCondition, this,
+                                                                                SWITCH_LIGHT_DURATION,
+                                                                                SWITCH_LIGHT_COOL_DOWN), mSireneSwitch(
+                sireneSwitchCondition, this, SWITCH_SIREN_DURATION, SWITCH_SIREN_COOL_DOWN), mEmergencyLightBarSwitch(
+                emergencySwitchCondition, this), mTrafficLightBarSwitch(trafficlightSwitchCondition, this)
 {
     // is true if parking light is on, false otherwise
     mLightStatus.parkingLight = 0;
@@ -54,6 +62,7 @@ RcCarLights::RcCarLights() :
     misLightSwitchPressed = false;
 
     // is true if dimmed headlights are on, false otherwise
+
     mLightStatus.headlight = 0;
 
     // is true if break light is on, false otherwise
@@ -86,7 +95,13 @@ void RcCarLights::setup(void)
 
     mLightController.setupPins();
     mLightController.addBehaviour(AbstractRcCarLightController::HEADLIGHT, &gHeadlightBehaviour);
+#ifdef DEBUG
     Serial.print("\nSetup.");
+#endif
+    mLightSwitch.setup();
+    mEmergencyLightBarSwitch.setup();
+    mSireneSwitch.setup();
+    mTrafficLightBarSwitch.setup();
 
 }
 
@@ -99,6 +114,12 @@ void RcCarLights::setup(void)
 void RcCarLights::loop(void)
 {
     mRemoteControlCarAdapter.refresh();
+
+    // Switch refresh
+    mLightSwitch.refresh();
+    mEmergencyLightBarSwitch.refresh();
+    mSireneSwitch.refresh();
+    mTrafficLightBarSwitch.refresh();
 
     updateLightStatus();
 #ifdef DEBUG
@@ -142,6 +163,21 @@ void RcCarLights::loop(void)
 
     Serial.print("  Steering : ");
     Serial.print(mRemoteControlCarAdapter.getSteering());
+
+    Serial.print("  Steering : ");
+    Serial.print(mRemoteControlCarAdapter.getSteeringSwitch());
+
+    Serial.print("  Light : ");
+    Serial.print(mLightSwitch.getState());
+
+    Serial.print("  Emergency light : ");
+    Serial.print(mEmergencyLightBarSwitch.getState());
+
+    Serial.print("  Traffic light : ");
+    Serial.print(mTrafficLightBarSwitch.getState());
+
+    Serial.print("  Siren : ");
+    Serial.print(mSireneSwitch.getState());
 #endif
 
     setLights();
@@ -180,6 +216,19 @@ void RcCarLights::setLights()
     mLightController.loop(mLightStatus);
 }
 
+bool RcCarLights::lightSwitchCondition(void *pParam)
+{
+    if (pParam)
+    {
+        return RemoteControlCarAdapter::FORWARD
+                == ((RcCarLights *) pParam)->mRemoteControlCarAdapter.getThrottleSwitch();
+    }
+    else
+    {
+        return false;
+    }
+}
+
 /**
  * handles the general light switch
  *
@@ -188,21 +237,7 @@ void RcCarLights::setLights()
  */
 void RcCarLights::handleLightSwitch()
 {
-    // switch light (in general) on and off
-    if (RemoteControlCarAdapter::FORWARD == mRemoteControlCarAdapter.getThrottleSwitch()
-            && SWITCH_DURATION_LIGHTS < mRemoteControlCarAdapter.getDurationOfThrottleSwitch())
-    {
-        if (!misLightSwitchPressed)
-        {
-            // toggle light status
-            mLightStatus.parkingLight ^= 1;
-            misLightSwitchPressed = true;
-        }
-    }
-    else
-    {
-        misLightSwitchPressed = false;
-    }
+    mLightStatus.parkingLight = (Switch::ON == mLightSwitch.getState()) ? 1 : 0;
 }
 
 /**
@@ -255,7 +290,7 @@ void RcCarLights::handleBrakeLights()
 //    Serial.print( "  Cond  ");
 //    Serial.print( BREAK_ACCELERATION_LEVEL > mRemoteControlCarAdapter.getAcceleration() );
 
-    // switch on off brake lights
+// switch on/off brake lights
     if (BREAK_ACCELERATION_LEVEL > mRemoteControlCarAdapter.getAcceleration())
     {
         // brake lights on and store timestamp
@@ -264,10 +299,21 @@ void RcCarLights::handleBrakeLights()
     }
     else
     {
-        // if brake lights are on switch them off with a delay
-        if (mLightStatus.brakeLight && (BREAK_LIGHTS_OFF_DELAY < millis() - mBrakeLightsOnTimestamp))
+        if (RemoteControlCarAdapter::STOP == mRemoteControlCarAdapter.getThrottle())
         {
-            mLightStatus.brakeLight = 0;
+            // if brake lights are on switch them off with a delay
+            if (mLightStatus.brakeLight && (BREAK_LIGHTS_OFF_STAND_STILL_DELAY < millis() - mBrakeLightsOnTimestamp))
+            {
+                mLightStatus.brakeLight = 0;
+            }
+        }
+        else
+        {
+            // if brake lights are on switch them off with a delay
+            if (mLightStatus.brakeLight && (BREAK_LIGHTS_OFF_DELAY < millis() - mBrakeLightsOnTimestamp))
+            {
+                mLightStatus.brakeLight = 0;
+            }
         }
     }
 }
@@ -337,5 +383,51 @@ void RcCarLights::doBlinking()
                 mLastBlinkTimestamp = millis();
             }
         }
+    }
+}
+
+bool RcCarLights::sireneSwitchCondition(void*pParam)
+{
+    if (pParam)
+    {
+        RcCarLights *pThis = (RcCarLights *) pParam;
+
+        return (Switch::ON == pThis->mEmergencyLightBarSwitch.getState()) && (RemoteControlCarAdapter::LEFT
+                == pThis->mRemoteControlCarAdapter.getSteeringSwitch());
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool RcCarLights::emergencySwitchCondition(void*pParam)
+{
+    if (pParam)
+    {
+//        Serial.print("3rd channel value");
+//        Serial.println(((RcCarLights *) pParam)->mRemoteControlCarAdapter.get3rdChannelValue());
+
+        return (1500 > ((RcCarLights *) pParam)->mRemoteControlCarAdapter.get3rdChannelValue()) ?
+                true : false;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool RcCarLights::trafficlightSwitchCondition(void*pParam)
+{
+    if (pParam)
+    {
+        RcCarLights *pThis = (RcCarLights *) pParam;
+
+        return (Switch::ON == pThis->mEmergencyLightBarSwitch.getState()) && (RemoteControlCarAdapter::RIGHT
+                == pThis->mRemoteControlCarAdapter.getSteeringSwitch());
+    }
+    else
+    {
+        return false;
     }
 }

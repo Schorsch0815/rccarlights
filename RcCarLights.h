@@ -22,7 +22,9 @@
 #define RcCarLights_h
 
 #include "RemoteControlCarAdapter.h"
-#include "SimpleRcCarLightController.h"
+#include "CamaroRcCarLightController.h"
+#include "rccarswitches/ConditionSwitch.h"
+#include "rccarswitches/ImpulseSwitch.h"
 
 class RcCarLights
 {
@@ -45,10 +47,24 @@ private:
     void handleBlinkerSwitch();
     void doBlinking();
 
+    static bool lightSwitchCondition(void *pThis);
+    static bool sireneSwitchCondition(void *pThis);
+    static bool emergencySwitchCondition(void *pThis);
+    static bool trafficlightSwitchCondition(void *pThis);
+
 private:
 
     // duration in msec to switch on/off lights
-    static const unsigned long SWITCH_DURATION_LIGHTS = 1000;
+    const long SWITCH_LIGHT_DURATION = 1000;
+
+    // cool down time in msec for switch on/off lights
+    const long SWITCH_LIGHT_COOL_DOWN = 100;
+
+    // duration in msec to switch on/off lights
+    const long SWITCH_SIREN_DURATION = 1000;
+
+    // cool down time in msec for switch on/off lights
+    const long SWITCH_SIREN_COOL_DOWN = 100;
 
     // delay in msec to switch from Headlights to Parking light if car is stopped
     static const unsigned long DIM_HEADLIGHTS_TO_PARKING_DELAY = 1500;
@@ -62,8 +78,13 @@ private:
     // switch of delay for breaks to decrease flickering
     static const unsigned long BREAK_LIGHTS_OFF_DELAY = 200;
 
+    // switch of delay for breaks when stand still
+    static const long BREAK_LIGHTS_OFF_STAND_STILL_DELAY = 1800;
+
     // acceleration threshold for brake lights
     static const long BREAK_ACCELERATION_LEVEL = -20;
+
+    static const unsigned long THRESHOLD_3RD_CHANNEL = 512;
 
     // flag if light is switched is currently pressed (needed to suppress toggling the lights)
     bool misLightSwitchPressed;
@@ -79,9 +100,14 @@ private:
 
     RemoteControlCarAdapter mRemoteControlCarAdapter;
 
-    SimpleRcCarLightController mLightController;
+    CamaroRcCarLightController mLightController;
 
     AbstractRcCarLightController::CarLightsStatus_t mLightStatus;
+
+    ImpulseSwitch mLightSwitch;
+    ImpulseSwitch mSireneSwitch;
+    ConditionSwitch mEmergencyLightBarSwitch;
+    ConditionSwitch mTrafficLightBarSwitch;
 };
 
 #endif
