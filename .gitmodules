@@ -1,3 +1,6 @@
 [submodule "rccarswitches"]
 	path = rccarswitches
 	url = git@github.com:Schorsch0815/rccarswitches.git
+[submodule "arduinomock"]
+	path = arduinomock
+	url = /home/ejocsch/gitRepo/arduinomock/

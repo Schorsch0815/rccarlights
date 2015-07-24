@@ -64,8 +64,17 @@ public:
 
     /**
      *  sets the configured pins according to the light status
+     * @param pLightStatus current light status
      */
-    void loop(LightStatus_t pLightStatus);
+    void loop(CarLightsStatus_t pLightStatus);
+
+private:
+    /**
+     * set the headlights depending on the given light status
+     *
+     * @param pHeadlightStatus true if head lights should be turned on, false otherwise
+     */
+    void setHeadlights(bool pHeadlightStatus);
 
 private:
     // pin for parking lights
@@ -86,7 +95,7 @@ private:
     // pin or brake lights
     int mPinBrakeLight;
 
-    LightSwitchBehaviour *mheadlightBehaviour;
+    LightSwitchBehaviour *mHeadlightBehaviour;
 };
 
 #endif /* SIMPLERCCARLIGHTCONTROLLER_H_ */

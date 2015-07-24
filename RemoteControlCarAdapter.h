@@ -212,19 +212,19 @@ int calcAccelerationFactor();
 
 private:
     // measure interval between to values of throttle to determine acceleration
-    const unsigned long ACCELERATION_MEASURE_INTERVAL = 200;
+    static const unsigned long ACCELERATION_MEASURE_INTERVAL = 200;
 
     // epsilon for the null point of throttle
-    const unsigned long EPLSILON_NULL_THROTTLE = 25;
+    static const unsigned long EPLSILON_NULL_THROTTLE = 25;
 
     // epsilon for the null point of steering
-    const unsigned long EPLSILON_NULL_STEERING = 25;
+    static const unsigned long EPLSILON_NULL_STEERING = 25;
 
     // delta to border the switch on the throttle channel
-    const unsigned long DELTA_THROTTLE_SWITCH = 60;
+    static const unsigned long DELTA_THROTTLE_SWITCH = 60;
 
     // delta to border the switch on the steering channel
-    const unsigned long DELTA_STEERING_SWITCH = 60;
+    static const unsigned long DELTA_STEERING_SWITCH = 60;
 
     // status of throttle, could be FORWARD, STOP or BACKWARD
     Throttle_t mThrottle;

@@ -45,12 +45,12 @@ public:
     {
 
         unsigned int parkingLight : 1; // 1 if parking lights are on, otherwise 0
-        unsigned int headlight    : 1; // 1 if dimmed headlights are on, otherwise 0
+        unsigned int headlight    : 1; // 1 if headlights are on, otherwise 0
         unsigned int rightBlinker : 1; // 1 if right blink lights are on, otherwise 0
         unsigned int leftBlinker  : 1; // 1 if left blink lights are on, otherwise 0
         unsigned int backUpLight  : 1; // 1 if back up light is on, otherwise 0
         unsigned int brakeLight   : 1; // 1 if brake light is on, 0 otherwise
-    } LightStatus_t;
+    } CarLightsStatus_t;
 
     /**
      * constructor
@@ -87,7 +87,7 @@ public:
      *
      * @param lightStatus current light status
      */
-    virtual void loop(LightStatus_t pLightStatus) = 0;
+    virtual void loop(CarLightsStatus_t pLightStatus) = 0;
 };
 
 
