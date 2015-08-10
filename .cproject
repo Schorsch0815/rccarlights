@@ -21,6 +21,8 @@
 								<option id="it.baeyens.arduino.compiler.cpp.sketch.option.incpath.256742379" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.cpp.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/ejocsch/Arduino/libraries/Adafruit_NeoPixel"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.251269966" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
@@ -99,16 +101,6 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.base.487778641" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.78008506" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
-						</toolChain>
-					</folderInfo>
-					<folderInfo id="it.baeyens.arduino.core.toolChain.release.662642615.1381051756.597157216" name="/" resourcePath="arduinomock/unittests">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.base.119360595" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.200388995" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.465261701"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1314528215" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.181738482" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.1956600994"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.2081700397" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base.1713201075"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.1372314432" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base.1380850466"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.base.1886923146" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base.487778641"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
