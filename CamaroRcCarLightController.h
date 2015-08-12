@@ -45,7 +45,7 @@ public:
     /**
      *  sets the configured pins according to the light status
      */
-    void loop(LightStatus_t pLightStatus);
+    void loop(CarLightsStatus_t pLightStatus);
 
 private:
     /**
@@ -54,7 +54,7 @@ private:
      * @param pBlink is true if a blink light is currently on otherwise false
      * @return
      */
-    uint32_t getBackLightColor(LightStatus_t pLightStatus, bool pBlink);
+    uint32_t getBackLightColor(CarLightsStatus_t pLightStatus, bool pBlink);
 private:
     // pin for parking lights
     int mPinParkingLight;

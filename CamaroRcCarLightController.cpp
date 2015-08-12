@@ -100,7 +100,7 @@ void CamaroRcCarLightController::addBehaviour(LightType_t pLightType, LightSwitc
  *
  *   @param pLightStatus current light status of all the lights
  */
-void CamaroRcCarLightController::loop(LightStatus_t pLightStatus)
+void CamaroRcCarLightController::loop(CarLightsStatus_t pLightStatus)
 {
     // angle eyes
     digitalWrite(mPinParkingLight, pLightStatus.parkingLight ? HIGH : LOW);
@@ -156,7 +156,7 @@ void CamaroRcCarLightController::loop(LightStatus_t pLightStatus)
  * @param pBlink is true if a blink light is currently on otherwise false
  * @return
  */
-uint32_t CamaroRcCarLightController::getBackLightColor(LightStatus_t pLightStatus, bool pBlink)
+uint32_t CamaroRcCarLightController::getBackLightColor(CarLightsStatus_t pLightStatus, bool pBlink)
 {
     if (pLightStatus.brakeLight ^ pBlink)
     {

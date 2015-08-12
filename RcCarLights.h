@@ -35,7 +35,57 @@ public:
     void setup(void);
 
     void loop(void);
+
 private:
+
+    class LightSwitchCondition: public Condition
+    {
+    public:
+        LightSwitchCondition(RcCarLights & pRcCarLights);
+        virtual ~LightSwitchCondition();
+
+        virtual bool operator()();
+
+    private:
+        RcCarLights & mRcCarLights;
+    };
+
+    class SireneSwitchCondition: public Condition
+    {
+    public:
+        SireneSwitchCondition(RcCarLights & pRcCarLights);
+        virtual ~SireneSwitchCondition();
+
+        virtual bool operator()();
+
+    private:
+        RcCarLights & mRcCarLights;
+    };
+
+    class EmergencySwitchCondition: public Condition
+    {
+    public:
+        EmergencySwitchCondition(RcCarLights & pRcCarLights);
+        virtual ~EmergencySwitchCondition();
+
+        virtual bool operator()();
+
+    private:
+        RcCarLights & mRcCarLights;
+    };
+
+    class TrafficlightSwitchCondition: public Condition
+    {
+    public:
+        TrafficlightSwitchCondition(RcCarLights & pRcCarLights);
+        virtual ~TrafficlightSwitchCondition();
+
+        virtual bool operator()();
+
+    private:
+        RcCarLights & mRcCarLights;
+    };
+
     void updateLightStatus();
 
     void setLights();
@@ -47,24 +97,17 @@ private:
     void handleBlinkerSwitch();
     void doBlinking();
 
-    static bool lightSwitchCondition(void *pThis);
-    static bool sireneSwitchCondition(void *pThis);
-    static bool emergencySwitchCondition(void *pThis);
-    static bool trafficlightSwitchCondition(void *pThis);
-
-private:
-
     // duration in msec to switch on/off lights
-    const long SWITCH_LIGHT_DURATION = 1000;
+    static const long SWITCH_LIGHT_DURATION = 1000;
 
     // cool down time in msec for switch on/off lights
-    const long SWITCH_LIGHT_COOL_DOWN = 100;
+    static const long SWITCH_LIGHT_COOL_DOWN = 100;
 
     // duration in msec to switch on/off lights
-    const long SWITCH_SIREN_DURATION = 1000;
+    static const long SWITCH_SIREN_DURATION = 1000;
 
     // cool down time in msec for switch on/off lights
-    const long SWITCH_SIREN_COOL_DOWN = 100;
+    static const long SWITCH_SIREN_COOL_DOWN = 100;
 
     // delay in msec to switch from Headlights to Parking light if car is stopped
     static const unsigned long DIM_HEADLIGHTS_TO_PARKING_DELAY = 1500;
@@ -80,6 +123,9 @@ private:
 
     // switch of delay for breaks when stand still
     static const long BREAK_LIGHTS_OFF_STAND_STILL_DELAY = 1800;
+
+    // switch of delay for breaks when stand still
+    static const long BREAK_LIGHTS_OFF__STAND_STILL_DELAY = 700;
 
     // acceleration threshold for brake lights
     static const long BREAK_ACCELERATION_LEVEL = -20;
@@ -104,9 +150,16 @@ private:
 
     AbstractRcCarLightController::CarLightsStatus_t mLightStatus;
 
+    LightSwitchCondition mLightSwitchCondition;
     ImpulseSwitch mLightSwitch;
+
+    SireneSwitchCondition mSireneSwitchCondition;
     ImpulseSwitch mSireneSwitch;
+
+    EmergencySwitchCondition mEmergencySwitchCondition;
     ConditionSwitch mEmergencyLightBarSwitch;
+
+    TrafficlightSwitchCondition mTrafficLightSwitchCondition;
     ConditionSwitch mTrafficLightBarSwitch;
 };
 

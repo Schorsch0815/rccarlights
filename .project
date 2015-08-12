@@ -27,6 +27,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Libraries/Adafruit_NeoPixel</name>
+			<type>2</type>
+			<locationURI>ArduinoPivateLibPath/Adafruit_NeoPixel</locationURI>
+		</link>
+		<link>
 			<name>arduino/core</name>
 			<type>2</type>
 			<locationURI>ArduinoPlatformPath/cores/arduino</locationURI>

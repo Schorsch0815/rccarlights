@@ -21,8 +21,8 @@
 								<option id="it.baeyens.arduino.compiler.cpp.sketch.option.incpath.256742379" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.cpp.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="/home/ejocsch/Arduino/libraries/Adafruit_NeoPixel"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.251269966" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
@@ -30,6 +30,7 @@
 								<option id="it.baeyens.arduino.compiler.c.sketch.option.incpath.1860707389" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.c.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1683813598" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>
@@ -42,7 +43,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="Libraries/*/?xamples|Libraries/*/?xtras" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
+						<entry excluding="arduinomock|rccarswitches/unittests|unittests|Libraries/*/?xamples|Libraries/*/?xtras" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -73,6 +74,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${GTEST_PATH}/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1623826772" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -80,6 +82,7 @@
 								<option id="gnu.c.compiler.option.include.paths.1216318528" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1938682138" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -99,6 +102,9 @@
 								</inputType>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.base.487778641" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
+								<option id="gnu.both.asm.option.include.paths.2074483892" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.78008506" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
@@ -111,21 +117,6 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.533020444;cdt.managedbuild.config.gnu.exe.debug.533020444.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1357684156;cdt.managedbuild.tool.gnu.c.compiler.input.195385882">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.533020444;cdt.managedbuild.config.gnu.exe.debug.533020444.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2104913791;cdt.managedbuild.tool.gnu.cpp.compiler.input.1682595579">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1601921273;cdt.managedbuild.config.gnu.exe.release.1601921273.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1203311317;cdt.managedbuild.tool.gnu.cpp.compiler.input.107076021">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1601921273;cdt.managedbuild.config.gnu.exe.release.1601921273.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.1588947393;cdt.managedbuild.tool.gnu.c.compiler.input.238567083">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="rccarlights.null.27241696" name="rccarlights"/>
 	</storageModule>
@@ -137,5 +128,26 @@
 		<configuration configurationName="UnittestsDebug">
 			<resource resourceType="PROJECT" workspacePath="/rccarlights"/>
 		</configuration>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.533020444;cdt.managedbuild.config.gnu.exe.debug.533020444.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1357684156;cdt.managedbuild.tool.gnu.c.compiler.input.195385882">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="it.baeyens.arduino.core.toolChain.release.662642615.1381051756;it.baeyens.arduino.core.toolChain.release.662642615.1381051756.;cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922;cdt.managedbuild.tool.gnu.cpp.compiler.input.1623826772">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.533020444;cdt.managedbuild.config.gnu.exe.debug.533020444.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2104913791;cdt.managedbuild.tool.gnu.cpp.compiler.input.1682595579">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1601921273;cdt.managedbuild.config.gnu.exe.release.1601921273.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1203311317;cdt.managedbuild.tool.gnu.cpp.compiler.input.107076021">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="it.baeyens.arduino.core.toolChain.release.662642615.1381051756;it.baeyens.arduino.core.toolChain.release.662642615.1381051756.;cdt.managedbuild.tool.gnu.c.compiler.base.1956600994;cdt.managedbuild.tool.gnu.c.compiler.input.1938682138">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1601921273;cdt.managedbuild.config.gnu.exe.release.1601921273.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.1588947393;cdt.managedbuild.tool.gnu.c.compiler.input.238567083">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>
