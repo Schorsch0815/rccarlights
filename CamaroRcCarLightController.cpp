@@ -55,7 +55,7 @@ const uint32_t BACK_LIGHT_COLOR = Adafruit_NeoPixel::Color(48, 0, 0);
  */
 CamaroRcCarLightController::CamaroRcCarLightController(int pPinParkingLight, int pPinHeadlight, int pPinNeoPixel) :
         mPinParkingLight(pPinParkingLight), mPinHeadlight(pPinHeadlight), mNeoPixelStrip(NEO_PIXEL_COUNT, pPinNeoPixel,
-        NEO_GRB + NEO_KHZ800), mheadlightBehaviour(
+        NEO_GRB + NEO_KHZ800), mHeadlightBehaviour(
         NULL)
 {
 }
@@ -91,7 +91,7 @@ void CamaroRcCarLightController::addBehaviour(LightType_t pLightType, LightSwitc
     // only for headlights a special behaviour was supported by this controller
     if (HEADLIGHT == pLightType)
     {
-        mheadlightBehaviour = pLightSwitchBehaviour;
+        mHeadlightBehaviour = pLightSwitchBehaviour;
     }
 }
 
@@ -106,11 +106,11 @@ void CamaroRcCarLightController::loop(CarLightsStatus_t pLightStatus)
     digitalWrite(mPinParkingLight, pLightStatus.parkingLight ? HIGH : LOW);
 
     // headlights
-    if (mheadlightBehaviour)
+    if (mHeadlightBehaviour)
     {
-        mheadlightBehaviour->setLightStatus(
+        mHeadlightBehaviour->setLightStatus(
                 pLightStatus.headlight ? LightSwitchBehaviour::ON : LightSwitchBehaviour::OFF);
-        analogWrite(mPinHeadlight, mheadlightBehaviour->getBrightness() * 2.55);
+        analogWrite(mPinHeadlight, 2.55 * mHeadlightBehaviour->getBrightness());
     }
     else
     {

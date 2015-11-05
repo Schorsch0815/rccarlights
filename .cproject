@@ -16,21 +16,25 @@
 					<folderInfo id="it.baeyens.arduino.core.toolChain.release.662642615.299146800" name="/" resourcePath="">
 						<toolChain id="it.baeyens.arduino.core.toolChain.release.574388816" name="Arduino Toolchain" superClass="it.baeyens.arduino.core.toolChain.release">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="it.baeyens.arduino.targetplatform.1593424027" name="Arduino Target" osList="all" superClass="it.baeyens.arduino.targetplatform"/>
-							<builder buildPath="${workspace_loc:/rccarlights}/Release" id="it.baeyens.arduino.sketch.builder.414936343" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder" superClass="it.baeyens.arduino.sketch.builder"/>
+							<builder buildPath="${workspace_loc:/rccarlights}/Release" id="it.baeyens.arduino.sketch.builder.414936343" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder" superClass="it.baeyens.arduino.sketch.builder">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="UnittestsDebug"/>
+								</outputEntries>
+							</builder>
 							<tool id="it.baeyens.arduino.tool.sketch.compiler.cpp.1016262791" name="Arduino C++ Compiler" superClass="it.baeyens.arduino.tool.sketch.compiler.cpp">
 								<option id="it.baeyens.arduino.compiler.cpp.sketch.option.incpath.256742379" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.cpp.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.251269966" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
 							<tool id="it.baeyens.arduino.tool.compiler.c.1161534996" name="Arduino C Compiler" superClass="it.baeyens.arduino.tool.compiler.c">
 								<option id="it.baeyens.arduino.compiler.c.sketch.option.incpath.1860707389" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.c.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1683813598" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>
@@ -43,7 +47,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="arduinomock|rccarswitches/unittests|unittests|Libraries/*/?xamples|Libraries/*/?xtras" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="unittests|Libraries/*/?xamples|rccarswitches/unittests|Libraries/*/?xtras|Adafruit_NeoPixel" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -71,10 +75,9 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1647516317" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/arduinomock}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/arduinomock/Adafruit_NeoPixel}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${GTEST_PATH}/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1623826772" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -109,18 +112,31 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="it.baeyens.arduino.core.toolChain.release.662642615.1381051756.604933255" name="/" resourcePath="rccarswitches/arduinomock">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.base.650416434" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.485195982" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.465261701"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.985161962" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.290754276" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.1956600994"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1883931483" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base.1713201075"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.1043147755" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base.1380850466"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.base.1242812651" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base.487778641"/>
+					<folderInfo id="it.baeyens.arduino.core.toolChain.release.662642615.1381051756.2071069941" name="/" resourcePath="arduinomock">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.base.804814512" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base" unusedChildren="">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.521403759" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.465261701"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1298462994" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922">
+								<option id="gnu.cpp.compiler.option.include.paths.818206704" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/arduinomock}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${GTEST_PATH}/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1829587544" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.1821613615" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.1956600994">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.644101637" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1451398017" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base.1713201075"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.543364430" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base.1380850466"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.base.1575479471" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base.487778641">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1023093845" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="rccarswitches/arduinomock|rccarswitches/unittests|arduinomock/unittests|arduino|Libraries/*/?xamples|Libraries/*/?xtras" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="rccarlights.ino|arduinomock/Adafruit_NeoPixel|Adafruit_NeoPixel|Libraries/Adafruit_NeoPixel|rccarswitches/arduinomock|rccarswitches/unittests|arduinomock/unittests|arduino|Libraries/*/?xamples|Libraries/*/?xtras" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="arduinomock/Adafruit_NeoPixel"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

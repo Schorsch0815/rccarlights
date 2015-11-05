@@ -29,12 +29,12 @@
 		<link>
 			<name>Libraries/Adafruit_NeoPixel</name>
 			<type>2</type>
-			<locationURI>ArduinoPivateLibPath/Adafruit_NeoPixel</locationURI>
+			<locationURI>ArduinoPrivateLibPath/Adafruit_NeoPixel</locationURI>
 		</link>
 		<link>
 			<name>arduino/core</name>
 			<type>2</type>
-			<locationURI>ArduinoPlatformPath/cores/arduino</locationURI>
+			<locationURI>ArduinoPlatformPath/arduino</locationURI>
 		</link>
 		<link>
 			<name>arduino/variant</name>
@@ -53,7 +53,7 @@
 		</variable>
 		<variable>
 			<name>ArduinoPlatformPath</name>
-			<value>file:/home/ejocsch/bin/arduino-1.6.5/hardware/arduino/avr</value>
+			<value>file:/home/ejocsch/bin/arduino-1.6.5/hardware/arduino/avr/cores</value>
 		</variable>
 	</variableList>
 </projectDescription>

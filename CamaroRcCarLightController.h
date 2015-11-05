@@ -66,7 +66,7 @@ private:
     Adafruit_NeoPixel mNeoPixelStrip;
 
     // light behavior for head lights
-    LightSwitchBehaviour *mheadlightBehaviour;
+    LightSwitchBehaviour *mHeadlightBehaviour;
 };
 
 #endif /* CAMARORCCARLIGHTCONTROLLER_H_ */

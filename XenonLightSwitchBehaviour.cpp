@@ -101,18 +101,13 @@ XenonLightSwitchBehaviour::~XenonLightSwitchBehaviour()
 }
 
 /**
- * Sets light of the behaviour. For Xenon lights we have to store the current timestamp and reset the interpolation index to 0
+ * Sets light of the behavior. For Xenon lights we have to store the current time stamp and reset the interpolation index to 0
  * @param pLightStatus
  */
-void XenonLightSwitchBehaviour::setLightStatus( LightStatus_t pLightStatus )
+void XenonLightSwitchBehaviour::handlelightStatusChange( LightStatus_t pLightStatus )
 {
-    if (pLightStatus != getLightStatus())
-    {
-        _switchTimestamp = millis();
-        _interpolationIndex = 0;
-
-        setLightStatusSelf(pLightStatus);
-    }
+    _switchTimestamp = millis();
+    _interpolationIndex = 0;
 }
 
 /**

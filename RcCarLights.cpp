@@ -62,7 +62,7 @@ RcCarLights::RcCarLights() :
     // is true if parking light is on, false otherwise
     mLightStatus.parkingLight = 0;
 
-    misLightSwitchPressed = false;
+    mIsLightSwitchPressed = false;
 
     // is true if dimmed headlights are on, false otherwise
 
@@ -85,7 +85,7 @@ RcCarLights::RcCarLights() :
     mLastBlinkTimestamp = 0;
 
     // no blinking at startup
-    misBlinkingOn = false;
+    mIsBlinkingOn = false;
 }
 
 /**
@@ -141,7 +141,7 @@ void RcCarLights::loop(void)
     Serial.print(mLightStatus.brakeLight);
 
     Serial.print("   Blinking : ");
-    Serial.print(misBlinkingOn);
+    Serial.print(mIsBlinkingOn);
 
     if (mLightStatus.leftBlinker)
     {
@@ -341,7 +341,7 @@ void RcCarLights::handleBlinkerSwitch()
     if (RemoteControlCarAdapter::NEUTRAL
             == mRemoteControlCarAdapter.getSteering())
     {
-        misBlinkingOn = false;
+        mIsBlinkingOn = false;
         mLightStatus.leftBlinker = false;
         mLightStatus.rightBlinker = false;
     }
@@ -353,7 +353,7 @@ void RcCarLights::handleBlinkerSwitch()
                 && (BLINKING_ON_DELAY
                         < mRemoteControlCarAdapter.getDurationOfThrottleSwitch()))
         {
-            misBlinkingOn = true;
+            mIsBlinkingOn = true;
         }
     }
 }
@@ -366,7 +366,7 @@ void RcCarLights::handleBlinkerSwitch()
 void RcCarLights::doBlinking()
 {
     // switch blinker on and off
-    if (misBlinkingOn)
+    if (mIsBlinkingOn)
     {
         if (RemoteControlCarAdapter::LEFT
                 == mRemoteControlCarAdapter.getSteering())
@@ -401,7 +401,7 @@ RcCarLights::LightSwitchCondition::~LightSwitchCondition()
 {
 }
 
-bool RcCarLights::LightSwitchCondition::operator ()()
+bool RcCarLights::LightSwitchCondition::evaluate()
 {
     return RemoteControlCarAdapter::FORWARD
             == mRcCarLights.mRemoteControlCarAdapter.getThrottleSwitch();
@@ -417,7 +417,7 @@ RcCarLights::SireneSwitchCondition::~SireneSwitchCondition()
 {
 }
 
-bool RcCarLights::SireneSwitchCondition::operator ()()
+bool RcCarLights::SireneSwitchCondition::evaluate()
 {
     return (Switch::ON == mRcCarLights.mEmergencyLightBarSwitch.getState())
             && (RemoteControlCarAdapter::LEFT
@@ -434,7 +434,7 @@ RcCarLights::EmergencySwitchCondition::~EmergencySwitchCondition()
 {
 }
 
-bool RcCarLights::EmergencySwitchCondition::operator ()()
+bool RcCarLights::EmergencySwitchCondition::evaluate()
 {
     return (1500 > mRcCarLights.mRemoteControlCarAdapter.get3rdChannelValue()) ?
             true : false;
@@ -450,7 +450,7 @@ RcCarLights::TrafficlightSwitchCondition::~TrafficlightSwitchCondition()
 {
 }
 
-bool RcCarLights::TrafficlightSwitchCondition::operator ()()
+bool RcCarLights::TrafficlightSwitchCondition::evaluate()
 {
         return (Switch::ON == mRcCarLights.mEmergencyLightBarSwitch.getState())
                 && (RemoteControlCarAdapter::RIGHT

@@ -44,7 +44,7 @@ private:
         LightSwitchCondition(RcCarLights & pRcCarLights);
         virtual ~LightSwitchCondition();
 
-        virtual bool operator()();
+        virtual bool evaluate();
 
     private:
         RcCarLights & mRcCarLights;
@@ -56,7 +56,7 @@ private:
         SireneSwitchCondition(RcCarLights & pRcCarLights);
         virtual ~SireneSwitchCondition();
 
-        virtual bool operator()();
+        virtual bool evaluate();
 
     private:
         RcCarLights & mRcCarLights;
@@ -68,7 +68,7 @@ private:
         EmergencySwitchCondition(RcCarLights & pRcCarLights);
         virtual ~EmergencySwitchCondition();
 
-        virtual bool operator()();
+        virtual bool evaluate();
 
     private:
         RcCarLights & mRcCarLights;
@@ -80,7 +80,7 @@ private:
         TrafficlightSwitchCondition(RcCarLights & pRcCarLights);
         virtual ~TrafficlightSwitchCondition();
 
-        virtual bool operator()();
+        virtual bool evaluate();
 
     private:
         RcCarLights & mRcCarLights;
@@ -133,7 +133,7 @@ private:
     static const unsigned long THRESHOLD_3RD_CHANNEL = 512;
 
     // flag if light is switched is currently pressed (needed to suppress toggling the lights)
-    bool misLightSwitchPressed;
+    bool mIsLightSwitchPressed;
 
     // timestamp when brake lights are switched on
     long mBrakeLightsOnTimestamp;
@@ -142,7 +142,7 @@ private:
     long mLastBlinkTimestamp;
 
     // is true if blinker is switched on, false otherwise
-    bool misBlinkingOn;
+    bool mIsBlinkingOn;
 
     RemoteControlCarAdapter mRemoteControlCarAdapter;
 

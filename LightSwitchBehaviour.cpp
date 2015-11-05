@@ -34,3 +34,13 @@ LightSwitchBehaviour::LightSwitchBehaviour()
 LightSwitchBehaviour::~LightSwitchBehaviour()
 {
 }
+
+void LightSwitchBehaviour::setLightStatus( LightStatus_t pLightStatus )
+{
+    if (pLightStatus != getLightStatus())
+    {
+        handlelightStatusChange(pLightStatus);
+        mLightStatus = pLightStatus;
+    }
+
+}

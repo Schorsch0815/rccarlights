@@ -42,14 +42,7 @@ public:
     virtual ~XenonLightSwitchBehaviour();
 
     /**
-     * sets the lights status of the xenon light switch
-     *
-     * @param pLightStatus desired status of the controlled light
-     */
-    virtual void setLightStatus( LightStatus_t pLightStatus );
-
-    /**
-     * This method implements the startup flickering and the cooldown of a xenon light. It has to be call from the main loop and should
+     * This method implements the startup flickering and the cool down of a Xenon light. It has to be call from the main loop and should
      * be called as often as possible to get smooth brightness changes.
      *
      * @return the brightness of light
@@ -58,7 +51,14 @@ public:
 
 private:
     /**
-     * timestamp used to store the timestamp when the light status changes
+     * prepares the Xenon light switch behavior whenever a change of light status occurs.
+     *
+     * @param pLightStatus new light status
+     */
+    virtual void handlelightStatusChange( LightStatus_t pLightStatus );
+
+    /**
+     * stores the time stamp when the light status changes
      */
     long _switchTimestamp;
 
