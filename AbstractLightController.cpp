@@ -18,29 +18,31 @@
  *
  * --------------------------------------------------------------------*/
 
-#include "LightSwitchBehaviour.h"
+#include <cstdio>
+#include <memory>
 
-/**
- * constructor
- */
-LightSwitchBehaviour::LightSwitchBehaviour()
+#include "AbstractLightController.h"
+
+AbstractLightController::AbstractLightController( unsigned short pMaxLightGroups ) :
+        mLightGroupArray( NULL ),
+        mLightGroupCount( 0 ),
+        mMaxLightGroups( pMaxLightGroups )
 {
-    mLightStatus = OFF;
+    mLightGroupArray = (LightGroup **) malloc(
+            pMaxLightGroups * sizeof(LightGroup *) );
 }
 
-/**
- * destructor
- */
-LightSwitchBehaviour::~LightSwitchBehaviour()
+
+AbstractLightController::~AbstractLightController( void )
 {
 }
 
-void LightSwitchBehaviour::setLightStatus( LightStatus_t pLightStatus )
+
+void AbstractLightController::addLightGroup( LightGroup &pLightGroup )
 {
-    if (pLightStatus != getLightStatus())
+    if (mLightGroupCount < mMaxLightGroups)
     {
-        handlelightStatusChange(pLightStatus);
-        mLightStatus = pLightStatus;
+        mLightGroupArray[mLightGroupCount++] = &pLightGroup;
     }
-
 }
+

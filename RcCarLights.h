@@ -21,10 +21,17 @@
 #ifndef RcCarLights_h
 #define RcCarLights_h
 
+#include "Adafruit_NeoPixel.h"
+
+#include "AbstractLightController.h"
 #include "RemoteControlCarAdapter.h"
+#if 0
 #include "CamaroRcCarLightController.h"
+#endif
 #include "rccarswitches/ConditionSwitch.h"
 #include "rccarswitches/ImpulseSwitch.h"
+#include "PinLightGroup.h"
+#include "CamaroNeoPixelLightGroup.h"
 
 class RcCarLights
 {
@@ -32,58 +39,156 @@ public:
 
     RcCarLights();
 
-    void setup(void);
+    void setup( void );
 
-    void loop(void);
+    void loop( void );
 
 private:
 
-    class LightSwitchCondition: public Condition
+    void setupParkingLight();
+
+    class RcCarCondition : public Condition
     {
     public:
-        LightSwitchCondition(RcCarLights & pRcCarLights);
-        virtual ~LightSwitchCondition();
+        RcCarCondition( RcCarLights &pRcCarLights ) :
+                mRcCarLights( pRcCarLights )
+        {
+        }
+        virtual ~RcCarCondition()
+        {
+        }
 
-        virtual bool evaluate();
-
-    private:
+    protected:
         RcCarLights & mRcCarLights;
     };
 
-    class SireneSwitchCondition: public Condition
+    class LightSwitchCondition : public RcCarCondition
     {
     public:
-        SireneSwitchCondition(RcCarLights & pRcCarLights);
-        virtual ~SireneSwitchCondition();
+        LightSwitchCondition( RcCarLights &pRcCarLights ) :
+                RcCarCondition( pRcCarLights )
+        {
+        }
+        virtual ~LightSwitchCondition()
+        {
+        }
 
         virtual bool evaluate();
-
-    private:
-        RcCarLights & mRcCarLights;
     };
 
-    class EmergencySwitchCondition: public Condition
+    class HeadLightSwitchCondition : public RcCarCondition
     {
     public:
-        EmergencySwitchCondition(RcCarLights & pRcCarLights);
-        virtual ~EmergencySwitchCondition();
+        HeadLightSwitchCondition( RcCarLights &pRcCarLights ) :
+                RcCarCondition( pRcCarLights ), mConditionValue( false )
+        {
+        }
+        virtual ~HeadLightSwitchCondition()
+        {
+        }
 
         virtual bool evaluate();
-
     private:
-        RcCarLights & mRcCarLights;
+        bool mConditionValue;
     };
 
-    class TrafficlightSwitchCondition: public Condition
+    class BlinkerRightSwitchCondition : public RcCarCondition
     {
     public:
-        TrafficlightSwitchCondition(RcCarLights & pRcCarLights);
-        virtual ~TrafficlightSwitchCondition();
+        BlinkerRightSwitchCondition( RcCarLights &pRcCarLights ) :
+                RcCarCondition( pRcCarLights )
+        {
+        }
+        virtual ~BlinkerRightSwitchCondition()
+        {
+        }
 
         virtual bool evaluate();
+    };
 
-    private:
-        RcCarLights & mRcCarLights;
+    class BlinkerLeftSwitchCondition : public RcCarCondition
+    {
+    public:
+        BlinkerLeftSwitchCondition( RcCarLights &pRcCarLights ) :
+                RcCarCondition( pRcCarLights )
+        {
+        }
+        virtual ~BlinkerLeftSwitchCondition()
+        {
+        }
+
+        virtual bool evaluate();
+    };
+
+    class BreakSwitchCondition : public RcCarCondition
+    {
+    public:
+        BreakSwitchCondition( RcCarLights &pRcCarLights ) :
+                RcCarCondition( pRcCarLights )
+        {
+        }
+        virtual ~BreakSwitchCondition()
+        {
+        }
+
+        virtual bool evaluate();
+    };
+
+    class BackupLightSwitchCondition : public RcCarCondition
+    {
+    public:
+        BackupLightSwitchCondition( RcCarLights &pRcCarLights ) :
+                RcCarCondition( pRcCarLights )
+        {
+        }
+        virtual ~BackupLightSwitchCondition()
+        {
+        }
+
+        virtual bool evaluate();
+    };
+
+
+    class SireneSwitchCondition : public RcCarCondition
+    {
+    public:
+        SireneSwitchCondition( RcCarLights &pRcCarLights ) :
+                RcCarCondition( pRcCarLights )
+        {
+        }
+        virtual ~SireneSwitchCondition()
+        {
+        }
+
+        virtual bool evaluate();
+    };
+
+    class EmergencySwitchCondition : public RcCarCondition
+    {
+    public:
+        EmergencySwitchCondition( RcCarLights &pRcCarLights ) :
+            RcCarCondition( pRcCarLights )
+        {
+        }
+        virtual ~EmergencySwitchCondition()
+        {
+        }
+
+        virtual bool evaluate();
+    };
+
+    class TrafficLightBarSwitchCondition : public RcCarCondition
+    {
+    public:
+        TrafficLightBarSwitchCondition( RcCarLights &pRcCarLights ) :
+            RcCarCondition( pRcCarLights )
+        {
+        }
+        virtual ~TrafficLightBarSwitchCondition()
+        {
+        }
+
+        virtual bool evaluate();
     };
 
     void updateLightStatus();
@@ -97,14 +202,16 @@ private:
     void handleBlinkerSwitch();
     void doBlinking();
 
+    Switch::SwitchState_t getLightSwitchState() { return mLightSwitch.getState();}
+
     // duration in msec to switch on/off lights
-    static const long SWITCH_LIGHT_DURATION = 1000;
+    static const long SWITCH_LIGHT_IMPULSE_DURATION = 1000;
 
     // cool down time in msec for switch on/off lights
     static const long SWITCH_LIGHT_COOL_DOWN = 100;
 
     // duration in msec to switch on/off lights
-    static const long SWITCH_SIREN_DURATION = 1000;
+    static const long SWITCH_SIREN_IMPULSE_DURATION = 1000;
 
     // cool down time in msec for switch on/off lights
     static const long SWITCH_SIREN_COOL_DOWN = 100;
@@ -132,6 +239,8 @@ private:
 
     static const unsigned long THRESHOLD_3RD_CHANNEL = 512;
 
+    static const uint16_t NEO_PIXEL_COUNT = 14;
+
     // flag if light is switched is currently pressed (needed to suppress toggling the lights)
     bool mIsLightSwitchPressed;
 
@@ -146,21 +255,38 @@ private:
 
     RemoteControlCarAdapter mRemoteControlCarAdapter;
 
-    CamaroRcCarLightController mLightController;
+//    CamaroRcCarLightController mOldLightController;
 
-    AbstractRcCarLightController::CarLightsStatus_t mLightStatus;
+    AbstractLightController::CarLightsStatus_t mLightStatus;
 
+    // switch, condition and group settings for general light/park light handling
     LightSwitchCondition mLightSwitchCondition;
     ImpulseSwitch mLightSwitch;
+    rccarlights::PinLightGroup mParkingLightGroup;
 
+    // switch, condition and group settings for headligth handling
+    HeadLightSwitchCondition mHeadLightSwitchCondition;
+    ConditionSwitch mHeadLightSwitch;
+    rccarlights::PinLightGroup mHeadlightLightGroup;
+
+    Adafruit_NeoPixel mNeoPixelStrip;
+
+    rccarlights::CamaroNeoPixelLightGroup mCamaroLightGroup;
+
+    // switch, condition and group settings for sirene handling
     SireneSwitchCondition mSireneSwitchCondition;
     ImpulseSwitch mSireneSwitch;
 
+    // switch, condition and group settings for emergency handling
     EmergencySwitchCondition mEmergencySwitchCondition;
     ConditionSwitch mEmergencyLightBarSwitch;
 
-    TrafficlightSwitchCondition mTrafficLightSwitchCondition;
+    // switch, condition and group settings for traffic control handling
+    TrafficLightBarSwitchCondition mTrafficLightBarSwitchCondition;
     ConditionSwitch mTrafficLightBarSwitch;
+
+    // new stuff
+    AbstractLightController mLightController;
 };
 
 #endif

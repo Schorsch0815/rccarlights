@@ -18,14 +18,14 @@
  *
  * --------------------------------------------------------------------*/
 
-#ifndef LIGHTSWITCHBEHAVIOUR_H_
-#define LIGHTSWITCHBEHAVIOUR_H_
+#ifndef LIGHTBEHAVIOR_H_
+#define LIGHTBEHAVIOR_H_
 
 /**
- * class to change the behavior of the light switching. The base class ha to be enhanced by a subclass to implement
+ * class to change the behavior of the light dimming. The base class ha to be enhanced by a subclass to implement
  * a specialized behaviors like dim on/off or flicking like xenon lights.
  */
-class LightSwitchBehaviour
+class LightBehavior
 {
 public:
     /**
@@ -39,12 +39,12 @@ public:
     /**
      * constructor
      */
-    LightSwitchBehaviour();
+    LightBehavior();
 
     /**
      * destructor
      */
-    virtual ~LightSwitchBehaviour();
+    virtual ~LightBehavior();
 
     /**
      * sets the lights status of the behavior.
@@ -85,4 +85,4 @@ private:
 
 };
 
-#endif /* LIGHTSWITCHBEHAVIOUR_H_ */
+#endif /* LIGHTBEHAVIOR_H_ */

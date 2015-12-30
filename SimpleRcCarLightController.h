@@ -17,12 +17,15 @@
  * Copyright: Jochen Schales 2014
  *
  * --------------------------------------------------------------------*/
+#if 0
 
 #ifndef SIMPLERCCARLIGHTCONTROLLER_H_
 #define SIMPLERCCARLIGHTCONTROLLER_H_
 
-#include "AbstractRcCarLightController.h"
-#include "LightSwitchBehaviour.h"
+#include "AbstractLightController.h"
+#include "LightBehavior.h"
+
+class LightGroup;
 
 /**
  * Simple implementation of a RcCarLight output class
@@ -32,7 +35,7 @@
  * The used pins have to passed in the right order to the constructor and the loop method will set these pins to HIGH
  * according the light status passed.
  */
-class SimpleRcCarLightController : public AbstractRcCarLightController
+class SimpleRcCarLightController : public AbstractLightController
 {
 public:
     /**
@@ -44,15 +47,19 @@ public:
      * @param pinBackUpLight specifies pin used for back up  light
      * @param pinBrakeLight specifies pin used for brake light
      */
-    SimpleRcCarLightController(int pPinParkingLight, int pPinHeadlight, int pPinRightBlinker, int pPinLeftBlinker,
-                           int pPinBackUpLight, int pPinBrakeLight);
+    SimpleRcCarLightController( int pPinParkingLight,
+                                int pPinHeadlight,
+                                int pPinRightBlinker,
+                                int pPinLeftBlinker,
+                                int pPinBackUpLight,
+                                int pPinBrakeLight );
 
     /**
      * configures the required pins for OUTPUT.
      *
      * The method has to be called during setup
      */
-    void setupPins(void);
+    void setupPins( void );
 
     /**
      * allows to add a behavior for a specific light type. The SimpleRcCarLightControllor only support a behavior for the headlights.
@@ -60,13 +67,14 @@ public:
      * @param pLightType lights type where a behavior should be assigned
      * @param pLightSwitchBehaviour behavior, which influences the light switching
      */
-    void addBehaviour(LightType_t pLightType, LightSwitchBehaviour *pLightSwitchBehaviour);
+    void addBehaviour( LightType_t pLightType,
+                       LightBehavior *pLightSwitchBehaviour );
 
     /**
      *  sets the configured pins according to the light status
      * @param pLightStatus current light status
      */
-    void loop(CarLightsStatus_t pLightStatus);
+    void loop( CarLightsStatus_t pLightStatus );
 
 private:
     /**
@@ -74,7 +82,7 @@ private:
      *
      * @param pHeadlightStatus true if head lights should be turned on, false otherwise
      */
-    void setHeadlights(bool pHeadlightStatus);
+    void setHeadlights( bool pHeadlightStatus );
 
 private:
     // pin for parking lights
@@ -95,7 +103,8 @@ private:
     // pin or brake lights
     int mPinBrakeLight;
 
-    LightSwitchBehaviour *mHeadlightBehaviour;
+    LightBehavior *mHeadlightBehaviour;
 };
 
 #endif /* SIMPLERCCARLIGHTCONTROLLER_H_ */
+#endif

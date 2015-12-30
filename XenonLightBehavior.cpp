@@ -19,7 +19,7 @@
  * --------------------------------------------------------------------*/
 #include "Arduino.h"
 
-#include "XenonLightSwitchBehaviour.h"
+#include "XenonLightBehavior.h"
 
 /**
  * number of interpolation points for switching on
@@ -87,7 +87,7 @@ INTERPOLATION_POINT_t sXenonSwitchOff[NUM_XENON_OFF_INTERPOLATION_STEPS] =
 /**
  * constructor
  */
-XenonLightSwitchBehaviour::XenonLightSwitchBehaviour() : LightSwitchBehaviour()
+XenonLightBehavior::XenonLightBehavior() : LightBehavior()
 {
     _switchTimestamp = 0;
     _interpolationIndex = -1;
@@ -96,7 +96,7 @@ XenonLightSwitchBehaviour::XenonLightSwitchBehaviour() : LightSwitchBehaviour()
 /**
  * destructor
  */
-XenonLightSwitchBehaviour::~XenonLightSwitchBehaviour()
+XenonLightBehavior::~XenonLightBehavior()
 {
 }
 
@@ -104,7 +104,7 @@ XenonLightSwitchBehaviour::~XenonLightSwitchBehaviour()
  * Sets light of the behavior. For Xenon lights we have to store the current time stamp and reset the interpolation index to 0
  * @param pLightStatus
  */
-void XenonLightSwitchBehaviour::handlelightStatusChange( LightStatus_t pLightStatus )
+void XenonLightBehavior::handlelightStatusChange( LightStatus_t pLightStatus )
 {
     _switchTimestamp = millis();
     _interpolationIndex = 0;
@@ -115,7 +115,7 @@ void XenonLightSwitchBehaviour::handlelightStatusChange( LightStatus_t pLightSta
  *
  *  @return the current brightness of the light in percentage (0-100)
  */
-unsigned short XenonLightSwitchBehaviour::getBrightness( void )
+unsigned short XenonLightBehavior::getBrightness( void )
 {
     short value;
     short interpolationSteps = (ON == getLightStatus()) ? NUM_XENON_ON_INTERPOLATION_STEPS : NUM_XENON_OFF_INTERPOLATION_STEPS;

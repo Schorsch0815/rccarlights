@@ -18,24 +18,31 @@
  *
  * --------------------------------------------------------------------*/
 
-#ifndef ABSTRACTRCCARLIGHTCONTROLLER_H_
-#define ABSTRACTRCCARLIGHTCONTROLLER_H_
+#ifndef ABSTRACTLIGHTCONTROLLER_H_
+#define ABSTRACTLIGHTCONTROLLER_H_
 
-class LightSwitchBehaviour;
+class LightBehavior;
+class LightGroup;
 
 /**
- * Abstarct base class for RC car light output
+ * Abstract base class for RC car light output
  *
  * Is offers a public struct to store the light status of the supported light categories and provides a setup and loop
  * method.
  * Both methods (setupPins and loop) has to be overloaded by a concrete implementation class.
  */
-class AbstractRcCarLightController
+class AbstractLightController
 {
 public:
     typedef enum
     {
-        PARKING_LIGHT, HEADLIGHT, TAIL_LIGHT, RIGHT_BLINKER, LEFT_BLINKER, BACKUP_LIGHT, BRAKE_LIGHT
+        PARKING_LIGHT,
+        HEADLIGHT,
+        TAIL_LIGHT,
+        RIGHT_BLINKER,
+        LEFT_BLINKER,
+        BACKUP_LIGHT,
+        BRAKE_LIGHT
     } LightType_t;
 
     /**
@@ -43,24 +50,25 @@ public:
      */
     typedef struct
     {
-
-        unsigned int parkingLight : 1; // 1 if parking lights are on, otherwise 0
-        unsigned int headlight    : 1; // 1 if headlights are on, otherwise 0
-        unsigned int rightBlinker : 1; // 1 if right blink lights are on, otherwise 0
-        unsigned int leftBlinker  : 1; // 1 if left blink lights are on, otherwise 0
-        unsigned int backUpLight  : 1; // 1 if back up light is on, otherwise 0
-        unsigned int brakeLight   : 1; // 1 if brake light is on, 0 otherwise
+        unsigned int parkingLight :1; // 1 if parking lights are on, otherwise 0
+        unsigned int headlight :1; // 1 if headlights are on, otherwise 0
+        unsigned int rightBlinker :1; // 1 if right blink lights are on, otherwise 0
+        unsigned int leftBlinker :1; // 1 if left blink lights are on, otherwise 0
+        unsigned int backUpLight :1; // 1 if back up light is on, otherwise 0
+        unsigned int brakeLight :1; // 1 if brake light is on, 0 otherwise
     } CarLightsStatus_t;
 
     /**
      * constructor
      */
-    AbstractRcCarLightController( void );
+    AbstractLightController( unsigned short pMaxLightGroups );
 
     /**
      * destructor
      */
-    virtual ~AbstractRcCarLightController(void);
+    virtual ~AbstractLightController( void );
+
+#if 0
 
     /**
      * setup the pins.
@@ -68,15 +76,16 @@ public:
      * This method will be called from the general setup method of class RcCarLights.
      * Overload this method to configure the output pins as required.
      */
-    virtual void setupPins(void) = 0;
+    virtual void setupPins( void ) = 0;
 
     /**
-     * allows to add a behaviour for a specifc light type.
+     * allows to add a behavior for a specific light type.
      *
-     * @param pLightType lights type where a behaviour should be assigned
-     * @param pLightSwitchBehaviour behaviour, which influences the light switching
+     * @param pLightType lights type where a behavior should be assigned
+     * @param pLightSwitchBehaviour behavior, which influences the light switching
      */
-    virtual void addBehaviour(LightType_t pLightType, LightSwitchBehaviour *pLightSwitchBehaviour) = 0;
+    virtual void addBehaviour( LightType_t pLightType,
+                               LightBehavior *pLightSwitchBehaviour ) = 0;
 
     /**
      * provides the given light status to the output pins
@@ -87,8 +96,23 @@ public:
      *
      * @param lightStatus current light status
      */
-    virtual void loop(CarLightsStatus_t pLightStatus) = 0;
+    virtual void loop( CarLightsStatus_t pLightStatus ) = 0;
+#endif
+
+    /**
+     * adds a LightGroup to the array of light group
+     *
+     * If maximum number light groups are added any additional call to this function
+     * is ignored.
+     *
+     * @param pLightGroup light group to add
+     */
+    void addLightGroup( LightGroup &pLightGroup );
+
+private:
+    LightGroup **mLightGroupArray;
+    unsigned short mLightGroupCount;
+    unsigned short mMaxLightGroups;
 };
 
-
-#endif /* ABSTRACTRCCARLIGHTCONTROLLER_H_ */
+#endif /* ABSTRACTLIGHTCONTROLLER_H_ */

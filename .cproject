@@ -8,42 +8,25 @@
 					<extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.autotools.core.ErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 				<configuration artifactName="${ProjName}" buildProperties="" description="" id="it.baeyens.arduino.core.toolChain.release.662642615" name="Release" parent="org.eclipse.cdt.build.core.emptycfg">
 					<folderInfo id="it.baeyens.arduino.core.toolChain.release.662642615.299146800" name="/" resourcePath="">
-						<toolChain id="it.baeyens.arduino.core.toolChain.release.574388816" name="Arduino Toolchain" superClass="it.baeyens.arduino.core.toolChain.release">
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="it.baeyens.arduino.targetplatform.1593424027" name="Arduino Target" osList="all" superClass="it.baeyens.arduino.targetplatform"/>
-							<builder buildPath="${workspace_loc:/rccarlights}/Release" id="it.baeyens.arduino.sketch.builder.414936343" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder" superClass="it.baeyens.arduino.sketch.builder">
+						<toolChain id="it.baeyens.arduino.core.toolChain.release.574388816" name="Arduino Toolchain">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="it.baeyens.arduino.targetplatform.1593424027" name="Arduino Target" osList="all"/>
+							<builder buildPath="${workspace_loc:/rccarlights}/Release" id="it.baeyens.arduino.sketch.builder.414936343" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Arduino sketch builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="UnittestsDebug"/>
 								</outputEntries>
 							</builder>
-							<tool id="it.baeyens.arduino.tool.sketch.compiler.cpp.1016262791" name="Arduino C++ Compiler" superClass="it.baeyens.arduino.tool.sketch.compiler.cpp">
-								<option id="it.baeyens.arduino.compiler.cpp.sketch.option.incpath.256742379" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.cpp.sketch.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
-								</option>
-								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.251269966" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
-							</tool>
-							<tool id="it.baeyens.arduino.tool.compiler.c.1161534996" name="Arduino C Compiler" superClass="it.baeyens.arduino.tool.compiler.c">
-								<option id="it.baeyens.arduino.compiler.c.sketch.option.incpath.1860707389" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.c.sketch.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
-								</option>
-								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1683813598" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
-							</tool>
-							<tool id="it.baeyens.arduino.tool.sketch.compiler.s.1703068818" name="Arduino Assembler" superClass="it.baeyens.arduino.tool.sketch.compiler.s"/>
-							<tool id="it.baeyens.arduino.tool.ar.30694750" name="Arduino archiver" superClass="it.baeyens.arduino.tool.ar"/>
-							<tool id="it.baeyens.arduino.tool.combine.2051231561" name="Arduino combiner" superClass="it.baeyens.arduino.tool.combine"/>
-							<tool id="it.baeyens.arduino.tool.objcopy.eep.313983210" name="Arduino tool Create eeprom" superClass="it.baeyens.arduino.tool.objcopy.eep"/>
-							<tool id="it.baeyens.arduino.tool.objcopy.flash.891820858" name="Arduino tool Create hex" superClass="it.baeyens.arduino.tool.objcopy.flash"/>
-							<tool id="it.baeyens.arduino.tool.size.1589066669" name="Arduino tool Print Size" superClass="it.baeyens.arduino.tool.size"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
@@ -66,22 +49,25 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildProperties="" description="Configuration for unittests (Debug)" id="it.baeyens.arduino.core.toolChain.release.662642615.1381051756" name="UnittestsDebug" parent="org.eclipse.cdt.build.core.emptycfg">
+				<configuration artifactExtension="" artifactName="${ProjName}" buildProperties="" description="Configuration for unittests (Debug)" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="it.baeyens.arduino.core.toolChain.release.662642615.1381051756" name="UnittestsDebug" parent="org.eclipse.cdt.build.core.emptycfg" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
 					<folderInfo id="it.baeyens.arduino.core.toolChain.release.662642615.1381051756." name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.base.232928383" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
+						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.base.232928383" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.747173653" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-							<builder buildPath="${workspace_loc:/rccarlights}/UnittestsDebug" id="cdt.managedbuild.target.gnu.builder.base.685367124" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
+							<builder buildPath="${workspace_loc:/rccarlights}/UnittestsDebug" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator" id="cdt.managedbuild.target.gnu.builder.base.685367124" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.465261701" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
+							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1647516317" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/arduinomock}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/arduinomock/Adafruit_NeoPixel}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${GTEST_PATH}/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.643878133" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1623826772" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.1956600994" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
+							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.base.1956600994" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
 								<option id="gnu.c.compiler.option.include.paths.1216318528" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/variant}&quot;"/>
@@ -90,7 +76,7 @@
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1938682138" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1713201075" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
-							<tool commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}testrunner ${INPUTS}" id="cdt.managedbuild.tool.gnu.cpp.linker.base.1380850466" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
+							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}testrunner ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.base.1380850466" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.508826848" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="gtest"/>
 									<listOptionValue builtIn="false" value="pthread"/>
@@ -104,19 +90,20 @@
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.base.487778641" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
+							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.base.487778641" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
 								<option id="gnu.both.asm.option.include.paths.2074483892" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/Libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/arduino/core}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.78008506" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<folderInfo id="it.baeyens.arduino.core.toolChain.release.662642615.1381051756.2071069941" name="/" resourcePath="arduinomock">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.base.804814512" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base" unusedChildren="">
+						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.base.804814512" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base" unusedChildren="">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.521403759" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.465261701"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1298462994" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922">
+							<tool errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1298462994" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.5828922">
 								<option id="gnu.cpp.compiler.option.include.paths.818206704" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/arduinomock}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${GTEST_PATH}/include&quot;"/>
@@ -124,12 +111,12 @@
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1829587544" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.1821613615" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.1956600994">
+							<tool errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.base.1821613615" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.1956600994">
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.644101637" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1451398017" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base.1713201075"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.543364430" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base.1380850466"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.base.1575479471" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base.487778641">
+							<tool errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.base.1575479471" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base.487778641">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1023093845" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>

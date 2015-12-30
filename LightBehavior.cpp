@@ -18,19 +18,29 @@
  *
  * --------------------------------------------------------------------*/
 
-#include "AbstractRcCarLightController.h"
+#include "LightBehavior.h"
 
 /**
- * contructor
+ * constructor
  */
-AbstractRcCarLightController::AbstractRcCarLightController(void)
+LightBehavior::LightBehavior()
 {
+    mLightStatus = OFF;
 }
-
 
 /**
  * destructor
  */
-AbstractRcCarLightController::~AbstractRcCarLightController(void)
+LightBehavior::~LightBehavior()
 {
+}
+
+void LightBehavior::setLightStatus( LightStatus_t pLightStatus )
+{
+    if (pLightStatus != getLightStatus())
+    {
+        handlelightStatusChange(pLightStatus);
+        mLightStatus = pLightStatus;
+    }
+
 }

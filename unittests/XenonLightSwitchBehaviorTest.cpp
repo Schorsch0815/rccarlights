@@ -20,10 +20,10 @@
 
 #include "gtest/gtest.h"
 
-#include "../XenonLightSwitchBehaviour.h"
+#include "../XenonLightBehavior.h"
 
 // Tests Switch setState and getState.
-TEST(XenonLightSwitchBehaviourTest, SetGet) {
+TEST(XenonLightSwitchBehaviorTest, SetGet) {
 }
 
 
