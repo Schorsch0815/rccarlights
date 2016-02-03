@@ -10,7 +10,11 @@
 
 #include "LightGroup.h"
 
+#include <cstdio>
 #include "Arduino.h"
+
+class Switch;
+class LightBehavior;
 
 namespace rccarlights
 {

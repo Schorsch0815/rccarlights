@@ -21,8 +21,6 @@
 #ifndef RcCarLights_h
 #define RcCarLights_h
 
-#include "Adafruit_NeoPixel.h"
-
 #include "AbstractLightController.h"
 #include "RemoteControlCarAdapter.h"
 #if 0
@@ -124,7 +122,7 @@ private:
     {
     public:
         BreakSwitchCondition( RcCarLights &pRcCarLights ) :
-                RcCarCondition( pRcCarLights )
+                RcCarCondition( pRcCarLights ), mConditionValue( false )
         {
         }
         virtual ~BreakSwitchCondition()
@@ -132,6 +130,8 @@ private:
         }
 
         virtual bool evaluate();
+    private:
+        bool mConditionValue;
     };
 
     class BackupLightSwitchCondition : public RcCarCondition
@@ -204,6 +204,8 @@ private:
 
     Switch::SwitchState_t getLightSwitchState() { return mLightSwitch.getState();}
 
+    unsigned long getBreakLightOffDelay();
+
     // duration in msec to switch on/off lights
     static const long SWITCH_LIGHT_IMPULSE_DURATION = 1000;
 
@@ -239,7 +241,6 @@ private:
 
     static const unsigned long THRESHOLD_3RD_CHANNEL = 512;
 
-    static const uint16_t NEO_PIXEL_COUNT = 14;
 
     // flag if light is switched is currently pressed (needed to suppress toggling the lights)
     bool mIsLightSwitchPressed;
@@ -255,23 +256,27 @@ private:
 
     RemoteControlCarAdapter mRemoteControlCarAdapter;
 
-//    CamaroRcCarLightController mOldLightController;
-
     AbstractLightController::CarLightsStatus_t mLightStatus;
 
     // switch, condition and group settings for general light/park light handling
     LightSwitchCondition mLightSwitchCondition;
     ImpulseSwitch mLightSwitch;
-    rccarlights::PinLightGroup mParkingLightGroup;
 
     // switch, condition and group settings for headligth handling
     HeadLightSwitchCondition mHeadLightSwitchCondition;
     ConditionSwitch mHeadLightSwitch;
-    rccarlights::PinLightGroup mHeadlightLightGroup;
 
-    Adafruit_NeoPixel mNeoPixelStrip;
+    BreakSwitchCondition mBreakSwitchCondition;
+    ConditionSwitch mBreakSwitch;
 
-    rccarlights::CamaroNeoPixelLightGroup mCamaroLightGroup;
+    BlinkerLeftSwitchCondition mBlinkerLeftSwitchCondition;
+    ConditionSwitch mBlinkerLeftSwitch;
+
+    BlinkerRightSwitchCondition mBlinkerRightSwitchCondition;
+    ConditionSwitch mBlinkerRightSwitch;
+
+    BackupLightSwitchCondition mBackupLightSwitchCondition;
+    ConditionSwitch mBackupLightSwtch;
 
     // switch, condition and group settings for sirene handling
     SireneSwitchCondition mSireneSwitchCondition;
@@ -284,6 +289,13 @@ private:
     // switch, condition and group settings for traffic control handling
     TrafficLightBarSwitchCondition mTrafficLightBarSwitchCondition;
     ConditionSwitch mTrafficLightBarSwitch;
+
+    rccarlights::PinLightGroup mParkingLightGroup;
+
+    rccarlights::PinLightGroup mHeadlightLightGroup;
+
+    // light group for neo pixel strip
+    rccarlights::CamaroNeoPixelLightGroup mCamaroLightGroup;
 
     // new stuff
     AbstractLightController mLightController;

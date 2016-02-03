@@ -10,9 +10,6 @@
 
 #include <cstdio>
 
-class Switch;
-class LightBehavior;
-
 class LightGroup
 {
 public:
