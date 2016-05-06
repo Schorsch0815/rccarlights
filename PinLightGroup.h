@@ -21,24 +21,20 @@ namespace rccarlights
 
 class PinLightGroup : public LightGroup
 {
-public:
-    PinLightGroup(uint8_t pPin, Switch &pSwitch, LightBehavior *pLightBehavior = NULL);
+  public:
+    PinLightGroup( uint8_t pPin, Switch &pSwitch, LightBehavior *pLightBehavior = NULL );
     virtual ~PinLightGroup();
 
     virtual void refresh();
 
-private:
-
+  private:
     unsigned short getBrightness();
 
-    bool hasBehavior()
-    {
-        return (NULL == mLightBehavior);
-    }
+    bool hasBehavior() { return ( NULL != mLightBehavior ); }
 
-    Switch &mSwitch; ///< switch that controls the light group
+    Switch &mSwitch;               ///< switch that controls the light group
     LightBehavior *mLightBehavior; ///< light behavior
-    uint8_t mPin; ///< number of the corresponding arduino output pin
+    uint8_t mPin;                  ///< number of the corresponding arduino output pin
 };
 
 } /* namespace arduinomock */

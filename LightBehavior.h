@@ -27,13 +27,14 @@
  */
 class LightBehavior
 {
-public:
+  public:
     /**
      * enumeration type for the light status (ON/OFF)
      */
     typedef enum
     {
-        OFF = 0, ON
+        OFF = 0,
+        ON
     } LightStatus_t;
 
     /**
@@ -57,32 +58,27 @@ public:
      *
      * @return the current light status
      */
-    LightStatus_t getLightStatus( void )
-    {
-        return mLightStatus;
-    }
+    LightStatus_t getLightStatus( void ) { return mLightStatus; }
 
     /**
      * @return the bright of the lights controlled by the behavior
      */
     virtual unsigned short getBrightness( void ) = 0;
 
-protected:
-
+  protected:
     /**
-     * allows to prepare light status change in subclass. Will be called when setLightStatus was called and status has changed.
+     * allows to prepare light status change in subclass. Will be called when setLightStatus was called and status has
+     *changed.
      *
      * @param pLightStatus desired status of the controlled light
      */
     virtual void handlelightStatusChange( LightStatus_t pLightStatus ) = 0;
 
-private:
-
+  private:
     /**
      * light status
      */
     LightStatus_t mLightStatus;
-
 };
 
 #endif /* LIGHTBEHAVIOR_H_ */

@@ -1,0 +1,32 @@
+---
+# We'll use defaults from the LLVM style, but with 4 columns indentation.
+# Override does not always work, so commen this out
+#BasedOnStyle: LLVM
+IndentWidth: 4
+---
+Language: Cpp
+# Force pointers to the type for C++.
+#DerivePointerAlignment: false
+#PointerAlignment: Left
+
+# Added by NK
+ColumnLimit: 120
+TabWidth: 4
+UseTab: Never
+
+AlignAfterOpenBracket: true
+AlwaysBreakTemplateDeclarations: true
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBinaryOperators: NonAssignment 
+BreakBeforeBraces: Allman
+SpacesInParentheses: true
+
+# Does not seem to work if "BasedOnStyle: Google" is set
+BreakConstructorInitializersBeforeComma: true
+
+# Does not seem to work if "BasedOnStyle: Google" is set, is always aligned left
+PointerAlignment: Right
+
+IndentCaseLabels: true
+

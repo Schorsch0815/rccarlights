@@ -299,7 +299,7 @@ private:
     bool mIsCalibrated;
 
     // pin used for pwm input for throttle
-    int mPinThrottle;
+    uint8_t mPinThrottle;
 
     // pin used for pwm input for steering
     int mPinSteering;

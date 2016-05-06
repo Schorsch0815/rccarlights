@@ -12,7 +12,7 @@
 
 class LightGroup
 {
-public:
+  public:
     LightGroup();
     virtual ~LightGroup();
 

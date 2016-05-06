@@ -9,7 +9,7 @@
 #define CAMARONEOPIXELLIGHTGROUP_H_
 
 #include "LightGroup.h"
-
+#include "Arduino.h"
 #include "Adafruit_NeoPixel.h"
 
 class Switch;

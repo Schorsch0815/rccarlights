@@ -10,23 +10,23 @@
 #include "LightBehavior.h"
 #include "rccarswitches/Switch.h"
 
+using namespace std;
+
 namespace rccarlights
 {
 
-PinLightGroup::PinLightGroup( uint8_t pPin,
-                              Switch &pSwitch,
-                              LightBehavior *pLightBehavior ) :
-                mSwitch( pSwitch ), mLightBehavior( pLightBehavior ), mPin( pPin )
+PinLightGroup::PinLightGroup( uint8_t pPin, Switch &pSwitch, LightBehavior *pLightBehavior )
+    : mSwitch( pSwitch )
+    , mLightBehavior( pLightBehavior )
+    , mPin( pPin )
 {
 }
 
-PinLightGroup::~PinLightGroup()
-{
-}
+PinLightGroup::~PinLightGroup() {}
 
 unsigned short PinLightGroup::getBrightness()
 {
-    if (hasBehavior())
+    if ( hasBehavior() )
     {
         return mLightBehavior->getBrightness();
     }
@@ -38,12 +38,11 @@ unsigned short PinLightGroup::getBrightness()
 
 void PinLightGroup::refresh()
 {
-    if (hasBehavior())
+    if ( hasBehavior() )
     {
-        mLightBehavior->setLightStatus(
-                mSwitch.getState() ? LightBehavior::ON : LightBehavior::OFF );
+        mLightBehavior->setLightStatus( mSwitch.getState() ? LightBehavior::ON : LightBehavior::OFF );
     }
-    analogWrite( mPin, 2.55 * getBrightness() );
+    analogWrite( mPin, 255 * getBrightness() / 100 );
 }
 
 } /* namespace rccarlights */

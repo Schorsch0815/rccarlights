@@ -34,3 +34,4 @@ i
 /Release/
 /UnittestsDebug/
 .ino.cpp
+/GcovUnittests/

@@ -21,11 +21,7 @@
 #ifndef RcCarLights_h
 #define RcCarLights_h
 
-#include "AbstractLightController.h"
 #include "RemoteControlCarAdapter.h"
-#if 0
-#include "CamaroRcCarLightController.h"
-#endif
 #include "rccarswitches/ConditionSwitch.h"
 #include "rccarswitches/ImpulseSwitch.h"
 #include "PinLightGroup.h"
@@ -193,15 +189,6 @@ private:
 
     void updateLightStatus();
 
-    void setLights();
-
-    void handleLightSwitch();
-    void handleHeadlight();
-    void handleBackUpLights();
-    void handleBrakeLights();
-    void handleBlinkerSwitch();
-    void doBlinking();
-
     Switch::SwitchState_t getLightSwitchState() { return mLightSwitch.getState();}
 
     unsigned long getBreakLightOffDelay();
@@ -241,22 +228,7 @@ private:
 
     static const unsigned long THRESHOLD_3RD_CHANNEL = 512;
 
-
-    // flag if light is switched is currently pressed (needed to suppress toggling the lights)
-    bool mIsLightSwitchPressed;
-
-    // timestamp when brake lights are switched on
-    long mBrakeLightsOnTimestamp;
-
-    // last timestamp then blinker was switched on or off
-    long mLastBlinkTimestamp;
-
-    // is true if blinker is switched on, false otherwise
-    bool mIsBlinkingOn;
-
     RemoteControlCarAdapter mRemoteControlCarAdapter;
-
-    AbstractLightController::CarLightsStatus_t mLightStatus;
 
     // switch, condition and group settings for general light/park light handling
     LightSwitchCondition mLightSwitchCondition;
@@ -276,7 +248,7 @@ private:
     ConditionSwitch mBlinkerRightSwitch;
 
     BackupLightSwitchCondition mBackupLightSwitchCondition;
-    ConditionSwitch mBackupLightSwtch;
+    ConditionSwitch mBackupLightSwitch;
 
     // switch, condition and group settings for sirene handling
     SireneSwitchCondition mSireneSwitchCondition;
@@ -296,9 +268,6 @@ private:
 
     // light group for neo pixel strip
     rccarlights::CamaroNeoPixelLightGroup mCamaroLightGroup;
-
-    // new stuff
-    AbstractLightController mLightController;
 };
 
 #endif

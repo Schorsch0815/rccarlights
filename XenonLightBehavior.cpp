@@ -24,7 +24,7 @@
 /**
  * number of interpolation points for switching on
  */
-#define NUM_XENON_ON_INTERPOLATION_STEPS   6
+#define NUM_XENON_ON_INTERPOLATION_STEPS 6
 
 typedef struct
 {
@@ -33,61 +33,30 @@ typedef struct
 } INTERPOLATION_POINT_t;
 
 /**
- * Startup array which holds the interpolation tuples which combines the duration in milliseconds and the brightness in percentage value.
+ * Startup array which holds the interpolation tuples which combines the duration in milliseconds and the brightness in
+ * percentage value.
  * The light start with short flash, then a short flickering and a smooth startup.
  */
-INTERPOLATION_POINT_t sXenonSwitchOn[NUM_XENON_ON_INTERPOLATION_STEPS] =
-        {
-                {
-                        0, 100
-                },
-                {
-                        60, 100
-                },
-                {
-                        65, 5
-                },
-                {
-                        250, 10
-                },
-                {
-                        400, 7
-                },
-                {
-                       2000, 100
-                }
-        };
-
+INTERPOLATION_POINT_t sXenonSwitchOn[NUM_XENON_ON_INTERPOLATION_STEPS] = {
+    {0, 100}, {60, 100}, {65, 5}, {250, 10}, {400, 7}, {2000, 100}};
 
 /**
  * number of interpolation points for switching off
  */
-#define NUM_XENON_OFF_INTERPOLATION_STEPS   4
+#define NUM_XENON_OFF_INTERPOLATION_STEPS 4
 
 /**
- * Switching off array which holds the interpolation tuples which combines the duration in milliseconds and the brightness in percentage value.
+ * Switching off array which holds the interpolation tuples which combines the duration in milliseconds and the
+ * brightness in percentage value.
  * The light just turns off smoothly.
  */
-INTERPOLATION_POINT_t sXenonSwitchOff[NUM_XENON_OFF_INTERPOLATION_STEPS] =
-        {
-                {
-                        0, 100
-                },
-                {
-                       60, 50
-                },
-                {
-                       110, 10
-                },
-                {
-                       500, 0
-                }
-        };
+INTERPOLATION_POINT_t sXenonSwitchOff[NUM_XENON_OFF_INTERPOLATION_STEPS] = {{0, 100}, {60, 50}, {110, 10}, {500, 0}};
 
 /**
  * constructor
  */
-XenonLightBehavior::XenonLightBehavior() : LightBehavior()
+XenonLightBehavior::XenonLightBehavior()
+    : LightBehavior()
 {
     _switchTimestamp = 0;
     _interpolationIndex = -1;
@@ -96,12 +65,11 @@ XenonLightBehavior::XenonLightBehavior() : LightBehavior()
 /**
  * destructor
  */
-XenonLightBehavior::~XenonLightBehavior()
-{
-}
+XenonLightBehavior::~XenonLightBehavior() {}
 
 /**
- * Sets light of the behavior. For Xenon lights we have to store the current time stamp and reset the interpolation index to 0
+ * Sets light of the behavior. For Xenon lights we have to store the current time stamp and reset the interpolation
+ * index to 0
  * @param pLightStatus
  */
 void XenonLightBehavior::handlelightStatusChange( LightStatus_t pLightStatus )
@@ -111,34 +79,35 @@ void XenonLightBehavior::handlelightStatusChange( LightStatus_t pLightStatus )
 }
 
 /**
- * Calculates the current brightness of the light depending on the light status and the interpolation steps used for light status change.
+ * Calculates the current brightness of the light depending on the light status and the interpolation steps used for
+ *light status change.
  *
  *  @return the current brightness of the light in percentage (0-100)
  */
 unsigned short XenonLightBehavior::getBrightness( void )
 {
     short value;
-    short interpolationSteps = (ON == getLightStatus()) ? NUM_XENON_ON_INTERPOLATION_STEPS : NUM_XENON_OFF_INTERPOLATION_STEPS;
-    INTERPOLATION_POINT_t *interpolationTable = (ON == getLightStatus()) ? sXenonSwitchOn: sXenonSwitchOff;
+    short interpolationSteps =
+        ( ON == getLightStatus() ) ? NUM_XENON_ON_INTERPOLATION_STEPS : NUM_XENON_OFF_INTERPOLATION_STEPS;
+    INTERPOLATION_POINT_t *interpolationTable = ( ON == getLightStatus() ) ? sXenonSwitchOn : sXenonSwitchOff;
 
-    if (-1 == _interpolationIndex)
+    if ( -1 == _interpolationIndex )
     {
-        return interpolationTable[interpolationSteps-1].y;
+        return interpolationTable[interpolationSteps - 1].y;
     }
 
-    if (_interpolationIndex < interpolationSteps)
+    if ( _interpolationIndex < interpolationSteps )
     {
         long currentMillis = millis() - _switchTimestamp;
-        while (currentMillis > interpolationTable[_interpolationIndex].x)
+        while ( currentMillis > interpolationTable[_interpolationIndex].x )
         {
             _interpolationIndex++;
 
-            if (_interpolationIndex >= interpolationSteps)
-                return (ON == getLightStatus()) ? 100 : 0;
+            if ( _interpolationIndex >= interpolationSteps )
+                return ( ON == getLightStatus() ) ? 100 : 0;
         }
 
-
-        if (0 ==_interpolationIndex)
+        if ( 0 == _interpolationIndex )
         {
             return interpolationTable[_interpolationIndex].y;
         }
@@ -149,31 +118,13 @@ unsigned short XenonLightBehavior::getBrightness( void )
         // f(x) = f  + ----------- (x   -  x )
         //         0    x   -  x            0
         //               1      0
-        value = interpolationTable[_interpolationIndex-1].y
-                                                     + (interpolationTable[_interpolationIndex].y - interpolationTable[_interpolationIndex-1].y)
-                                                     / (interpolationTable[_interpolationIndex].x - interpolationTable[_interpolationIndex-1].x)
-                                                     * (currentMillis - interpolationTable[_interpolationIndex-1].x);
+        value = interpolationTable[_interpolationIndex - 1].y
+                + ( interpolationTable[_interpolationIndex].y - interpolationTable[_interpolationIndex - 1].y )
+                      / ( interpolationTable[_interpolationIndex].x - interpolationTable[_interpolationIndex - 1].x )
+                      * ( currentMillis - interpolationTable[_interpolationIndex - 1].x );
 
-/*
-        Serial.print( "  f1 = ");
-        Serial.print(interpolationTable[_interpolationIndex].y);
-        Serial.print( " f0 = ");
-        Serial.print(interpolationTable[_interpolationIndex-1].y);
-        Serial.print( " x1 = ");
-        Serial.print(interpolationTable[_interpolationIndex].x);
-        Serial.print( " x0 = ");
-        Serial.print(interpolationTable[_interpolationIndex-1].x);
-
-        Serial.print( "index = ");
-        Serial.print(_interpolationIndex);
-        Serial.print("   current millis: ");
-        Serial.print(currentMillis);
-        Serial.print("    brightness: ");
-        Serial.print(value);
-        Serial.print("\n");
-*/
         return value;
     }
 
-    return (ON == getLightStatus()) ? 100 : 0;
+    return ( ON == getLightStatus() ) ? 100 : 0;
 }
