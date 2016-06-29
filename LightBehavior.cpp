@@ -37,10 +37,9 @@ LightBehavior::~LightBehavior()
 
 void LightBehavior::setLightStatus( LightStatus_t pLightStatus )
 {
-    if (pLightStatus != getLightStatus())
+    if ( pLightStatus != getLightStatus() )
     {
-        handlelightStatusChange(pLightStatus);
+        handlelightStatusChange( pLightStatus );
         mLightStatus = pLightStatus;
     }
-
 }

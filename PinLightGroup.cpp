@@ -22,7 +22,9 @@ PinLightGroup::PinLightGroup( uint8_t pPin, Switch &pSwitch, LightBehavior *pLig
 {
 }
 
-PinLightGroup::~PinLightGroup() {}
+PinLightGroup::~PinLightGroup()
+{
+}
 
 unsigned short PinLightGroup::getBrightness()
 {

@@ -27,7 +27,7 @@
  */
 class LightBehavior
 {
-  public:
+public:
     /**
      * enumeration type for the light status (ON/OFF)
      */
@@ -58,14 +58,17 @@ class LightBehavior
      *
      * @return the current light status
      */
-    LightStatus_t getLightStatus( void ) { return mLightStatus; }
+    LightStatus_t getLightStatus( void )
+    {
+        return mLightStatus;
+    }
 
     /**
      * @return the bright of the lights controlled by the behavior
      */
     virtual unsigned short getBrightness( void ) = 0;
 
-  protected:
+protected:
     /**
      * allows to prepare light status change in subclass. Will be called when setLightStatus was called and status has
      *changed.
@@ -74,7 +77,7 @@ class LightBehavior
      */
     virtual void handlelightStatusChange( LightStatus_t pLightStatus ) = 0;
 
-  private:
+private:
     /**
      * light status
      */

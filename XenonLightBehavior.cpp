@@ -38,7 +38,13 @@ typedef struct
  * The light start with short flash, then a short flickering and a smooth startup.
  */
 INTERPOLATION_POINT_t sXenonSwitchOn[NUM_XENON_ON_INTERPOLATION_STEPS] = {
-    {0, 100}, {60, 100}, {65, 5}, {250, 10}, {400, 7}, {2000, 100}};
+    { 0, 100 },
+    { 60, 100 },
+    { 65, 5 },
+    { 250, 10 },
+    { 400, 7 },
+    { 2000, 100 } //
+};
 
 /**
  * number of interpolation points for switching off
@@ -50,7 +56,12 @@ INTERPOLATION_POINT_t sXenonSwitchOn[NUM_XENON_ON_INTERPOLATION_STEPS] = {
  * brightness in percentage value.
  * The light just turns off smoothly.
  */
-INTERPOLATION_POINT_t sXenonSwitchOff[NUM_XENON_OFF_INTERPOLATION_STEPS] = {{0, 100}, {60, 50}, {110, 10}, {500, 0}};
+INTERPOLATION_POINT_t sXenonSwitchOff[NUM_XENON_OFF_INTERPOLATION_STEPS] = {
+    { 0, 100 },
+    { 60, 50 },
+    { 110, 10 },
+    { 500, 0 } //
+};
 
 /**
  * constructor
@@ -65,7 +76,9 @@ XenonLightBehavior::XenonLightBehavior()
 /**
  * destructor
  */
-XenonLightBehavior::~XenonLightBehavior() {}
+XenonLightBehavior::~XenonLightBehavior()
+{
+}
 
 /**
  * Sets light of the behavior. For Xenon lights we have to store the current time stamp and reset the interpolation
@@ -87,8 +100,8 @@ void XenonLightBehavior::handlelightStatusChange( LightStatus_t pLightStatus )
 unsigned short XenonLightBehavior::getBrightness( void )
 {
     short value;
-    short interpolationSteps =
-        ( ON == getLightStatus() ) ? NUM_XENON_ON_INTERPOLATION_STEPS : NUM_XENON_OFF_INTERPOLATION_STEPS;
+    short interpolationSteps = ( ON == getLightStatus() ) ? NUM_XENON_ON_INTERPOLATION_STEPS
+                                                          : NUM_XENON_OFF_INTERPOLATION_STEPS;
     INTERPOLATION_POINT_t *interpolationTable = ( ON == getLightStatus() ) ? sXenonSwitchOn : sXenonSwitchOff;
 
     if ( -1 == _interpolationIndex )

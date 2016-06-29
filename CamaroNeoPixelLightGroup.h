@@ -39,39 +39,38 @@ public:
     } NeoPixelPosition_t;
 
     CamaroNeoPixelLightGroup( uint8_t pArduinoPin,
-            Switch &pLightSwitch,
-            Switch &pFogLightSwitch,
-            Switch &pBreakSwitch,
-            Switch &pLeftBlinkerSwitch,
-            Switch &pRightBlinkerSwitch,
-            Switch &pBackupLightSwtch );
+                              Switch &pLightSwitch,
+                              Switch &pFogLightSwitch,
+                              Switch &pBreakSwitch,
+                              Switch &pLeftBlinkerSwitch,
+                              Switch &pRightBlinkerSwitch,
+                              Switch &pBackupLightSwtch );
 
     virtual ~CamaroNeoPixelLightGroup();
 
     virtual void refresh();
 
 private:
-
     uint32_t getBackLightColor( Switch &pBlinkerSwitch );
 
     static const uint16_t NEO_PIXEL_COUNT = 14;
 
-    const uint32_t BLACK_COLOR = Adafruit_NeoPixel::Color( 0, 0, 0 );
+    static const uint32_t BLACK_COLOR;
 
-    const uint32_t FOG_LIGHT_COLOR = Adafruit_NeoPixel::Color( 96, 96, 96 );
+    static const uint32_t FOG_LIGHT_COLOR;
 
-    const uint32_t BLINKER_FRONT_COLOR = Adafruit_NeoPixel::Color( 128, 128, 0 );
+    static const uint32_t BLINKER_FRONT_COLOR;
 
-    const uint32_t SIDE_MARKER_FRONT_COLOR = Adafruit_NeoPixel::Color( 32, 32, 0 );
-    const uint32_t SIDE_MARKER_FRONT_BLINKER_COLOR = Adafruit_NeoPixel::Color( 128, 128, 0 );
+    static const uint32_t SIDE_MARKER_FRONT_COLOR;
+    static const uint32_t SIDE_MARKER_FRONT_BLINKER_COLOR;
 
-    const uint32_t SIDE_MARKER_REAR_COLOR = Adafruit_NeoPixel::Color( 32, 0, 0 );
-    const uint32_t SIDE_MARKER_READ_BLINKER_COLOR = Adafruit_NeoPixel::Color( 128, 0, 0 );
+    static const uint32_t SIDE_MARKER_REAR_COLOR;
+    static const uint32_t SIDE_MARKER_READ_BLINKER_COLOR;
 
-    const uint32_t BACKUP_LIGHT_COLOR = Adafruit_NeoPixel::Color( 64, 48, 16 );
+    static const uint32_t BACKUP_LIGHT_COLOR;
 
-    const uint32_t BACK_LIGHT_BREAK_BLINKER_COLOR = Adafruit_NeoPixel::Color( 255, 0, 0 );
-    const uint32_t BACK_LIGHT_COLOR = Adafruit_NeoPixel::Color( 48, 0, 0 );
+    static const uint32_t BACK_LIGHT_BREAK_BLINKER_COLOR;
+    static const uint32_t BACK_LIGHT_COLOR;
 
     Adafruit_NeoPixel mNeoPixelStrip;
     Switch &mLightSwitch;

@@ -5,7 +5,7 @@
  *      Author: ejocsch
  */
 
-#include <cstdio>
+#include <stdio.h>
 
 #include "LightGroup.h"
 

@@ -6,6 +6,11 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
+			<name>it.baeyens.arduino.core.inoToCpp</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
 			<triggers>clean,full,incremental,</triggers>
 			<arguments>
@@ -27,28 +32,24 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Libraries/Adafruit_NeoPixel</name>
+			<name>rccarswitches</name>
 			<type>2</type>
-			<locationURI>ArduinoPrivateLibPath/Adafruit_NeoPixel</locationURI>
+			<location>/home/ejocsch/gitRepo/rccarlights/rccarswitches</location>
 		</link>
 		<link>
-			<name>arduino/core</name>
+			<name>core/core</name>
 			<type>2</type>
-			<locationURI>ArduinoPlatformPath</locationURI>
+			<location>/home/ejocsch/bin/eclipseArduino/arduinoPlugin/packages/arduino/hardware/avr/1.6.11/cores/arduino</location>
+		</link>
+		<link>
+			<name>core/variant</name>
+			<type>2</type>
+			<location>/home/ejocsch/bin/eclipseArduino/arduinoPlugin/packages/arduino/hardware/avr/1.6.11/variants/eightanaloginputs</location>
+		</link>
+		<link>
+			<name>libraries/Adafruit_NeoPixel</name>
+			<type>2</type>
+			<location>/home/ejocsch/Arduino/libraries/Adafruit_NeoPixel</location>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>ArduinoHardwareLibPath</name>
-			<value>file:/home/ejocsch/bin/arduino-1.6.5/hardware/arduino/avr/libraries</value>
-		</variable>
-		<variable>
-			<name>ArduinoPinPath</name>
-			<value>file:/home/ejocsch/bin/arduino-1.6.5/hardware/arduino/avr</value>
-		</variable>
-		<variable>
-			<name>ArduinoPlatformPath</name>
-			<value>file:/home/ejocsch/bin/arduino-1.6.5/hardware/arduino/avr</value>
-		</variable>
-	</variableList>
 </projectDescription>

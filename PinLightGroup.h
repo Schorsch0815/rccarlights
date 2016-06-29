@@ -10,7 +10,7 @@
 
 #include "LightGroup.h"
 
-#include <cstdio>
+#include <stdio.h>
 #include "Arduino.h"
 
 class Switch;
@@ -21,16 +21,19 @@ namespace rccarlights
 
 class PinLightGroup : public LightGroup
 {
-  public:
+public:
     PinLightGroup( uint8_t pPin, Switch &pSwitch, LightBehavior *pLightBehavior = NULL );
     virtual ~PinLightGroup();
 
     virtual void refresh();
 
-  private:
+private:
     unsigned short getBrightness();
 
-    bool hasBehavior() { return ( NULL != mLightBehavior ); }
+    bool hasBehavior()
+    {
+        return ( NULL != mLightBehavior );
+    }
 
     Switch &mSwitch;               ///< switch that controls the light group
     LightBehavior *mLightBehavior; ///< light behavior

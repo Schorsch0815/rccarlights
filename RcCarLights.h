@@ -30,7 +30,6 @@
 class RcCarLights
 {
 public:
-
     RcCarLights();
 
     void setup( void );
@@ -38,14 +37,13 @@ public:
     void loop( void );
 
 private:
-
     void setupParkingLight();
 
     class RcCarCondition : public Condition
     {
     public:
-        RcCarCondition( RcCarLights &pRcCarLights ) :
-                mRcCarLights( pRcCarLights )
+        RcCarCondition( RcCarLights &pRcCarLights )
+            : mRcCarLights( pRcCarLights )
         {
         }
         virtual ~RcCarCondition()
@@ -53,14 +51,14 @@ private:
         }
 
     protected:
-        RcCarLights & mRcCarLights;
+        RcCarLights &mRcCarLights;
     };
 
     class LightSwitchCondition : public RcCarCondition
     {
     public:
-        LightSwitchCondition( RcCarLights &pRcCarLights ) :
-                RcCarCondition( pRcCarLights )
+        LightSwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
         {
         }
         virtual ~LightSwitchCondition()
@@ -73,8 +71,9 @@ private:
     class HeadLightSwitchCondition : public RcCarCondition
     {
     public:
-        HeadLightSwitchCondition( RcCarLights &pRcCarLights ) :
-                RcCarCondition( pRcCarLights ), mConditionValue( false )
+        HeadLightSwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
+            , mConditionValue( false )
         {
         }
         virtual ~HeadLightSwitchCondition()
@@ -82,6 +81,7 @@ private:
         }
 
         virtual bool evaluate();
+
     private:
         bool mConditionValue;
     };
@@ -89,8 +89,8 @@ private:
     class BlinkerRightSwitchCondition : public RcCarCondition
     {
     public:
-        BlinkerRightSwitchCondition( RcCarLights &pRcCarLights ) :
-                RcCarCondition( pRcCarLights )
+        BlinkerRightSwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
         {
         }
         virtual ~BlinkerRightSwitchCondition()
@@ -103,8 +103,8 @@ private:
     class BlinkerLeftSwitchCondition : public RcCarCondition
     {
     public:
-        BlinkerLeftSwitchCondition( RcCarLights &pRcCarLights ) :
-                RcCarCondition( pRcCarLights )
+        BlinkerLeftSwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
         {
         }
         virtual ~BlinkerLeftSwitchCondition()
@@ -117,8 +117,9 @@ private:
     class BreakSwitchCondition : public RcCarCondition
     {
     public:
-        BreakSwitchCondition( RcCarLights &pRcCarLights ) :
-                RcCarCondition( pRcCarLights ), mConditionValue( false )
+        BreakSwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
+            , mConditionValue( false )
         {
         }
         virtual ~BreakSwitchCondition()
@@ -126,6 +127,7 @@ private:
         }
 
         virtual bool evaluate();
+
     private:
         bool mConditionValue;
     };
@@ -133,8 +135,8 @@ private:
     class BackupLightSwitchCondition : public RcCarCondition
     {
     public:
-        BackupLightSwitchCondition( RcCarLights &pRcCarLights ) :
-                RcCarCondition( pRcCarLights )
+        BackupLightSwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
         {
         }
         virtual ~BackupLightSwitchCondition()
@@ -144,12 +146,11 @@ private:
         virtual bool evaluate();
     };
 
-
     class SireneSwitchCondition : public RcCarCondition
     {
     public:
-        SireneSwitchCondition( RcCarLights &pRcCarLights ) :
-                RcCarCondition( pRcCarLights )
+        SireneSwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
         {
         }
         virtual ~SireneSwitchCondition()
@@ -162,8 +163,8 @@ private:
     class EmergencySwitchCondition : public RcCarCondition
     {
     public:
-        EmergencySwitchCondition( RcCarLights &pRcCarLights ) :
-            RcCarCondition( pRcCarLights )
+        EmergencySwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
         {
         }
         virtual ~EmergencySwitchCondition()
@@ -176,8 +177,8 @@ private:
     class TrafficLightBarSwitchCondition : public RcCarCondition
     {
     public:
-        TrafficLightBarSwitchCondition( RcCarLights &pRcCarLights ) :
-            RcCarCondition( pRcCarLights )
+        TrafficLightBarSwitchCondition( RcCarLights &pRcCarLights )
+            : RcCarCondition( pRcCarLights )
         {
         }
         virtual ~TrafficLightBarSwitchCondition()
@@ -189,7 +190,10 @@ private:
 
     void updateLightStatus();
 
-    Switch::SwitchState_t getLightSwitchState() { return mLightSwitch.getState();}
+    Switch::SwitchState_t getLightSwitchState()
+    {
+        return mLightSwitch.getState();
+    }
 
     unsigned long getBreakLightOffDelay();
 
@@ -271,4 +275,3 @@ private:
 };
 
 #endif
-

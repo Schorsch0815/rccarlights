@@ -25,7 +25,7 @@
 
 RcCarLights gRcCarLights;
 
-//The setup function is called once at startup of the sketch
+// The setup function is called once at startup of the sketch
 void setup()
 {
     gRcCarLights.setup();

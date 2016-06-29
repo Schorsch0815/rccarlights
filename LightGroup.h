@@ -8,11 +8,11 @@
 #ifndef LIGHTGROUP_H_
 #define LIGHTGROUP_H_
 
-#include <cstdio>
+#include <stdio.h>
 
 class LightGroup
 {
-  public:
+public:
     LightGroup();
     virtual ~LightGroup();
 
