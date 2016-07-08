@@ -377,9 +377,9 @@ RemoteControlCarAdapter::Throttle_t RemoteControlCarAdapter::calculateThrottleSw
 RemoteControlCarAdapter::Steering_t RemoteControlCarAdapter::calculateSteering( void )
 {
     if ( mRCSteeringNullValue + EPLSILON_NULL_STEERING < mRCSteeringValue )
-        return LEFT;
-    else if ( mRCSteeringNullValue - EPLSILON_NULL_STEERING > mRCSteeringValue )
         return RIGHT;
+    else if ( mRCSteeringNullValue - EPLSILON_NULL_STEERING > mRCSteeringValue )
+        return LEFT;
     else
         return NEUTRAL;
 }
@@ -399,11 +399,11 @@ RemoteControlCarAdapter::Steering_t RemoteControlCarAdapter::calculateSteeringSw
     }
     else if ( mRCSteeringNullValue + EPLSILON_NULL_STEERING < mRCSteeringValue )
     {
-        return LEFT;
+        return RIGHT;
     }
     else if ( mRCSteeringNullValue - EPLSILON_NULL_STEERING > mRCSteeringValue )
     {
-        return RIGHT;
+        return LEFT;
     }
 
     return NEUTRAL;

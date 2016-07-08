@@ -39,7 +39,6 @@
 							<tool id="it.baeyens.arduino.tool.ar.715249408" name="Arduino archiver" superClass="it.baeyens.arduino.tool.ar"/>
 							<tool id="it.baeyens.arduino.tool.combine.690820378" name="Arduino combiner" superClass="it.baeyens.arduino.tool.combine"/>
 							<tool id="it.baeyens.arduino.tool.objcopy.eep.1458664036" name="Arduino tool Create eeprom" superClass="it.baeyens.arduino.tool.objcopy.eep"/>
-							<tool id="it.baeyens.arduino.tool.objcopy.flash.777482254" name="Arduino tool Create hex" superClass="it.baeyens.arduino.tool.objcopy.flash"/>
 							<tool id="it.baeyens.arduino.tool.size.736746017" name="Arduino tool Print Size" superClass="it.baeyens.arduino.tool.size"/>
 						</toolChain>
 					</folderInfo>
@@ -74,6 +73,7 @@
 								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.1612891909" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1739324383" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${GTEST_PATH}/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/arduinomock/Adafruit_NeoPixel}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/arduinomock}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/rccarswitches}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/rccarlights/core/core}&quot;"/>
@@ -127,7 +127,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="rccarlights.ino|libraries/Adafruit_NeoPixel|core|rccarswitches/arduinomock|arduinomock/unittests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="arduinomock/Adafruit_NeoPixel/RealAdafruit_NeoPixel/Adafruit_NeoPixel.cpp|rccarlights.ino|libraries/Adafruit_NeoPixel|core|rccarswitches/arduinomock|arduinomock/unittests" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

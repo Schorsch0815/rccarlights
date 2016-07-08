@@ -19,35 +19,9 @@
  * --------------------------------------------------------------------*/
 
 #include "Arduino.h"
-//#include <Adafruit_NeoPixel.h>
+
 #include "RcCarLights.h"
-
-#include "XenonLightBehavior.h"
-
-// using namespace rccarlights;
-
-// pin 7 for pwm input
-const int PIN_THROTTLE = 7;
-
-// pin 8 for pwm input
-const int PIN_STEERING = 8;
-
-// pin 9 for pwm input
-const int PIN_3RD_CHANNEL = 9;
-
-const int PIN_PARKING_LIGHT = 2;
-const int PIN_HEADLIGHT = 3;
-const int PIN_NEO_PIXEL = 4;
-
-const int PIN_EMERGENCY_LIGHT_SWITCH = 10;
-const int PIN_SIRENE_SWITCH = 11;
-const int PIN_TRAFFIC_BAR_SWITCH = 12;
-
-const unsigned short MAX_LIGHT_GROUPS = 3;
-
-#define DEBUG 1
-
-#define THROTTLE_REVERSE true
+#include "RcCarLightsConstants.h"
 
 using namespace rccarlights;
 
@@ -58,53 +32,31 @@ RcCarLights::RcCarLights()
     : mRemoteControlCarAdapter( PIN_THROTTLE, THROTTLE_REVERSE, PIN_STEERING, PIN_3RD_CHANNEL )
     , mLightSwitchCondition( *this )
     , mLightSwitch( mLightSwitchCondition, SWITCH_LIGHT_IMPULSE_DURATION, SWITCH_LIGHT_COOL_DOWN )
-    ,
-
-    mHeadLightSwitchCondition( *this )
+    , mHeadLightSwitchCondition( *this )
     , mHeadLightSwitch( mHeadLightSwitchCondition )
-    ,
-
-    mBreakSwitchCondition( *this )
+    , mBreakSwitchCondition( *this )
     , mBreakSwitch( mBreakSwitchCondition )
-    ,
-
-    mBlinkerLeftSwitchCondition( *this )
+    , mBlinkerLeftSwitchCondition( *this )
     , mBlinkerLeftSwitch( mBlinkerLeftSwitchCondition )
-    ,
-
-    mBlinkerRightSwitchCondition( *this )
+    , mBlinkerRightSwitchCondition( *this )
     , mBlinkerRightSwitch( mBlinkerRightSwitchCondition )
-    ,
-
-    mBackupLightSwitchCondition( *this )
+    , mBackupLightSwitchCondition( *this )
     , mBackupLightSwitch( mBackupLightSwitchCondition )
-    ,
-
-    mSireneSwitchCondition( *this )
+    , mSireneSwitchCondition( *this )
     , mSireneSwitch( mSireneSwitchCondition, SWITCH_SIREN_IMPULSE_DURATION, SWITCH_SIREN_COOL_DOWN )
-    ,
-
-    mEmergencySwitchCondition( *this )
+    , mEmergencySwitchCondition( *this )
     , mEmergencyLightBarSwitch( mEmergencySwitchCondition )
-    ,
-
-    mTrafficLightBarSwitchCondition( *this )
+    , mTrafficLightBarSwitchCondition( *this )
     , mTrafficLightBarSwitch( mTrafficLightBarSwitchCondition )
-    ,
-
-    mParkingLightGroup( PIN_PARKING_LIGHT, mLightSwitch )
-    ,
-
-    mHeadlightLightGroup( PIN_HEADLIGHT, mHeadLightSwitch )
-    ,
-
-    mCamaroLightGroup( PIN_NEO_PIXEL,
-                       mLightSwitch,
-                       mEmergencyLightBarSwitch, // use emergency lightbar switch to handle fog lights
-                       mBreakSwitch,
-                       mBlinkerLeftSwitch,
-                       mBlinkerRightSwitch,
-                       mBackupLightSwitch )
+    , mParkingLightGroup( PIN_PARKING_LIGHT, mLightSwitch )
+    , mHeadlightLightGroup( PIN_HEADLIGHT, mHeadLightSwitch, &mHeadLightBehavior )
+    , mCamaroLightGroup( PIN_NEO_PIXEL,
+                         mLightSwitch,
+                         mEmergencyLightBarSwitch, // use emergency lightbar switch to handle fog lights
+                         mBreakSwitch,
+                         mBlinkerLeftSwitch,
+                         mBlinkerRightSwitch,
+                         mBackupLightSwitch )
 {
 }
 
@@ -115,7 +67,7 @@ void RcCarLights::setup( void )
 {
     Serial.begin( 9600 );
     mRemoteControlCarAdapter.setupPins();
-#ifdef DEBUG
+#if 0
     Serial.print( "\nSetup." );
 #endif
 
@@ -150,7 +102,7 @@ void RcCarLights::loop( void )
     mSireneSwitch.refresh();
     mTrafficLightBarSwitch.refresh();
 
-#ifdef DEBUG
+#if 0
 
     Serial.print( "\nLights : " );
     Serial.print( mLightSwitch.getState() );
@@ -225,7 +177,7 @@ bool RcCarLights::HeadLightSwitchCondition::evaluate()
             {
                 // switch back to parking lights after delay
                 if ( DIM_HEADLIGHTS_TO_PARKING_DELAY
-                     < mRcCarLights.mRemoteControlCarAdapter.getDurationOfThrottleSwitch() )
+                     <= mRcCarLights.mRemoteControlCarAdapter.getDurationOfThrottleSwitch() )
                 {
                     // look's we are parking: DIM THE LIGHTS...
                     mConditionValue = false;
@@ -250,7 +202,7 @@ bool RcCarLights::BlinkerLeftSwitchCondition::evaluate()
 {
     if ( RemoteControlCarAdapter::LEFT == mRcCarLights.mRemoteControlCarAdapter.getSteering()
          && ( RemoteControlCarAdapter::STOP == mRcCarLights.mRemoteControlCarAdapter.getThrottle() )
-         && ( BLINKING_ON_DELAY < mRcCarLights.mRemoteControlCarAdapter.getDurationOfThrottleSwitch() ) )
+         && ( BLINKING_ON_DELAY <= mRcCarLights.mRemoteControlCarAdapter.getDurationOfThrottleSwitch() ) )
     {
         return true;
     }
@@ -261,7 +213,7 @@ bool RcCarLights::BlinkerRightSwitchCondition::evaluate()
 {
     if ( RemoteControlCarAdapter::RIGHT == mRcCarLights.mRemoteControlCarAdapter.getSteering()
          && ( RemoteControlCarAdapter::STOP == mRcCarLights.mRemoteControlCarAdapter.getThrottle() )
-         && ( BLINKING_ON_DELAY < mRcCarLights.mRemoteControlCarAdapter.getDurationOfThrottleSwitch() ) )
+         && ( BLINKING_ON_DELAY <= mRcCarLights.mRemoteControlCarAdapter.getDurationOfThrottleSwitch() ) )
     {
         return true;
     }
@@ -271,7 +223,7 @@ bool RcCarLights::BlinkerRightSwitchCondition::evaluate()
 bool RcCarLights::BreakSwitchCondition::evaluate()
 {
 
-    if ( BREAK_ACCELERATION_LEVEL > mRcCarLights.mRemoteControlCarAdapter.getDirectionIndependentAcceleration() )
+    if ( BREAK_ACCELERATION_LEVEL >= mRcCarLights.mRemoteControlCarAdapter.getDirectionIndependentAcceleration() )
     {
         // brake lights on
         mConditionValue = true;

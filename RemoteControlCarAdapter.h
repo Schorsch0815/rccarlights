@@ -26,9 +26,9 @@ class RemoteControlCarAdapter
 public:
     typedef enum
     {
-        FORWARD,
-        STOP,
         BACKWARD,
+        STOP,
+        FORWARD,
         UNDEFINED_THROTTLE
     } Throttle_t;
 

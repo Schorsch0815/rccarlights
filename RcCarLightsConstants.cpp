@@ -14,37 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with RcCarLights.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright: Jochen Schales 2014
+ * Copyright: Jochen Schales 2016
  *
  * --------------------------------------------------------------------*/
 
-#include "Arduino.h"
+#include "RcCarLightsConstants.h"
 
-#ifdef ARDUINO
-#if ARDUINO == 10609
-#error "ARDUINO >= 100"
-#else
-#error "ARDUINO defined"
-#endif
-#else
-#error "not defined"
-#endif
 
-// to include Adafruit_NeoPixel.h it's a hack, otherwise the library path
-// will not be included as an include path
-//#include <Adafruit_NeoPixel.h>
-#include "RcCarLights.h"
+// pin 7 for pwm input
+const int PIN_THROTTLE = 7;
 
-RcCarLights gRcCarLights;
+// pin 8 for pwm input
+const int PIN_STEERING = 8;
 
-// The setup function is called once at startup of the sketch
-void setup()
-{
-    gRcCarLights.setup();
-}
+// pin 9 for pwm input
+const int PIN_3RD_CHANNEL = 9;
 
-// The loop function is called in an endless loop
-void loop()
-{
-    gRcCarLights.loop();
-}
+const int PIN_PARKING_LIGHT = 2;
+const int PIN_HEADLIGHT = 3;
+const int PIN_NEO_PIXEL = 4;
+
+const int PIN_EMERGENCY_LIGHT_SWITCH = 10;
+const int PIN_SIRENE_SWITCH = 11;
+const int PIN_TRAFFIC_BAR_SWITCH = 12;
+
+const unsigned short MAX_LIGHT_GROUPS = 3;
+
+const bool THROTTLE_REVERSE = true;
+

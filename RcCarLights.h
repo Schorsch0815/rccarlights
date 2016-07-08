@@ -26,6 +26,7 @@
 #include "rccarswitches/ImpulseSwitch.h"
 #include "PinLightGroup.h"
 #include "CamaroNeoPixelLightGroup.h"
+#include "XenonLightBehavior.h"
 
 class RcCarLights
 {
@@ -238,7 +239,7 @@ private:
     LightSwitchCondition mLightSwitchCondition;
     ImpulseSwitch mLightSwitch;
 
-    // switch, condition and group settings for headligth handling
+    // switch, condition and group settings for head light handling
     HeadLightSwitchCondition mHeadLightSwitchCondition;
     ConditionSwitch mHeadLightSwitch;
 
@@ -267,6 +268,8 @@ private:
     ConditionSwitch mTrafficLightBarSwitch;
 
     rccarlights::PinLightGroup mParkingLightGroup;
+
+    XenonLightBehavior mHeadLightBehavior;
 
     rccarlights::PinLightGroup mHeadlightLightGroup;
 

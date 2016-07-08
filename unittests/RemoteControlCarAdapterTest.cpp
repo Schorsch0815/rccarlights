@@ -251,3 +251,75 @@ TEST_F( RemoteControlCarAdapterTest, NegativeAccelerationBackwardTest )
 
     EXPECT_EQ( -1, lAdapter.getDirectionIndependentAcceleration() );
 }
+
+TEST_F( RemoteControlCarAdapterTest, CalibratedSteeringTest )
+{
+    RemoteControlCarAdapter lAdapter = createInitializeAndCalibrateAdapter();
+
+    EXPECT_EQ( RemoteControlCarAdapter::NEUTRAL, lAdapter.getSteering() );
+    EXPECT_EQ( RemoteControlCarAdapter::NEUTRAL, lAdapter.getSteeringSwitch() );
+    EXPECT_EQ( 0, lAdapter.getDurationOfSteeringSwitch() );
+}
+
+TEST_F( RemoteControlCarAdapterTest, CalibratedSteeringRightTest )
+{
+    RemoteControlCarAdapter lAdapter = createInitializeAndCalibrateAdapter();
+
+    ArduinoMockController::getInstance().setPulseValue( STEERING_PIN_ID, ArduinoMockController::PULSE_MAX_VALUE );
+    lAdapter.refresh();
+
+    delay( 50 );
+    lAdapter.refresh();
+
+    EXPECT_EQ( RemoteControlCarAdapter::RIGHT, lAdapter.getSteering() );
+    EXPECT_EQ( RemoteControlCarAdapter::UNDEFINED_STEERING, lAdapter.getSteeringSwitch() );
+    EXPECT_EQ( 50, lAdapter.getDurationOfSteeringSwitch() );
+}
+
+TEST_F( RemoteControlCarAdapterTest, CalibratedSteeringLeftTest )
+{
+    RemoteControlCarAdapter lAdapter = createInitializeAndCalibrateAdapter();
+
+    ArduinoMockController::getInstance().setPulseValue( STEERING_PIN_ID, ArduinoMockController::PULSE_MIN_VALUE );
+    lAdapter.refresh();
+
+    delay( 50 );
+    lAdapter.refresh();
+
+    EXPECT_EQ( RemoteControlCarAdapter::LEFT, lAdapter.getSteering() );
+    EXPECT_EQ( RemoteControlCarAdapter::UNDEFINED_STEERING, lAdapter.getSteeringSwitch() );
+    EXPECT_EQ( 50, lAdapter.getDurationOfSteeringSwitch() );
+}
+
+TEST_F( RemoteControlCarAdapterTest, SteeringSwitchRightTest )
+{
+    RemoteControlCarAdapter lAdapter = createInitializeAndCalibrateAdapter();
+
+    ArduinoMockController::getInstance().setPulseValue( STEERING_PIN_ID,
+                                                        ArduinoMockController::PULSE_NEUTRAL_VALUE + 30 );
+    lAdapter.refresh();
+
+    delay( 50 );
+    lAdapter.refresh();
+
+    EXPECT_EQ( RemoteControlCarAdapter::RIGHT, lAdapter.getSteering() );
+    EXPECT_EQ( RemoteControlCarAdapter::RIGHT, lAdapter.getSteeringSwitch() );
+    EXPECT_EQ( 50, lAdapter.getDurationOfSteeringSwitch() );
+}
+
+TEST_F( RemoteControlCarAdapterTest, SteeringSwitchLeftTest )
+{
+    RemoteControlCarAdapter lAdapter = createInitializeAndCalibrateAdapter();
+
+    ArduinoMockController::getInstance().setPulseValue( STEERING_PIN_ID,
+                                                        ArduinoMockController::PULSE_NEUTRAL_VALUE - 30 );
+    lAdapter.refresh();
+
+    delay( 50 );
+    lAdapter.refresh();
+
+    EXPECT_EQ( RemoteControlCarAdapter::LEFT, lAdapter.getSteering() );
+    EXPECT_EQ( RemoteControlCarAdapter::LEFT, lAdapter.getSteeringSwitch() );
+    EXPECT_EQ( 50, lAdapter.getDurationOfSteeringSwitch() );
+}
+
