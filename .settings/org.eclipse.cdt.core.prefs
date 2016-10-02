@@ -62,9 +62,6 @@ environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.SYSTEM.PATH/delimiter=\:
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.SYSTEM.PATH/operation=replace
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.SYSTEM.PATH/value=${A.RUNTIME.PLATFORM.PATH}/system
-environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.USB_FLAGS.WINDOWS/delimiter=\:
-environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.USB_FLAGS.WINDOWS/operation=replace
-environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.USB_FLAGS.WINDOWS/value=-DUSB_VID\=${A.BUILD.VID} -DUSB_PID\=${A.BUILD.PID} -DUSBCON  -DUSB_MANUFACTURER\=\\"${A.BUILD.USB_MANUFACTURER}\\" -DUSB_PRODUCT\=\\"${A.BUILD.USB_PRODUCT}\\"
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.USB_FLAGS/delimiter=\:
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.USB_FLAGS/operation=replace
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.BUILD.USB_FLAGS/value=-DUSB_VID\=${A.BUILD.VID} -DUSB_PID\=${A.BUILD.PID} '-DUSB_MANUFACTURER\=${A.BUILD.USB_MANUFACTURER}' '-DUSB_PRODUCT\=${A.BUILD.USB_PRODUCT}'
@@ -169,10 +166,10 @@ environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.DTS/value=3600
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.LOCAL/delimiter=\:
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.LOCAL/operation=replace
-environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.LOCAL/value=1467965016
+environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.LOCAL/value=1468599341
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.UTC/delimiter=\:
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.UTC/operation=replace
-environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.UTC/value=1467957816
+environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.UTC/value=1468592141
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.ZONE/delimiter=\:
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.ZONE/operation=replace
 environment/project/cdt.managedbuild.config.gnu.exe.debug.1594565309.1056653696/A.EXTRA.TIME.ZONE/value=3600
