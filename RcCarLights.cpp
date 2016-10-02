@@ -50,7 +50,8 @@ RcCarLights::RcCarLights()
     , mTrafficLightBarSwitch( mTrafficLightBarSwitchCondition )
     , mParkingLightGroup( PIN_PARKING_LIGHT, mLightSwitch )
     , mHeadlightLightGroup( PIN_HEADLIGHT, mHeadLightSwitch, &mHeadLightBehavior )
-    , mCamaroLightGroup( PIN_NEO_PIXEL,
+    , mNeoPixelStrip( NEO_PIXEL_COUNT, PIN_NEO_PIXEL, NEO_GRB + NEO_KHZ800 )
+    , mCamaroLightGroup( mNeoPixelStrip,
                          mLightSwitch,
                          mEmergencyLightBarSwitch, // use emergency lightbar switch to handle fog lights
                          mBreakSwitch,

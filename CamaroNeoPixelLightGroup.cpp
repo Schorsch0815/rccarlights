@@ -29,14 +29,14 @@ const uint32_t CamaroNeoPixelLightGroup::BACKUP_LIGHT_COLOR = Adafruit_NeoPixel:
 const uint32_t CamaroNeoPixelLightGroup::BACK_LIGHT_BREAK_BLINKER_COLOR = Adafruit_NeoPixel::Color( 255, 0, 0 );
 const uint32_t CamaroNeoPixelLightGroup::BACK_LIGHT_COLOR = Adafruit_NeoPixel::Color( 48, 0, 0 );
 
-CamaroNeoPixelLightGroup::CamaroNeoPixelLightGroup( uint8_t pArduinoPin,
+CamaroNeoPixelLightGroup::CamaroNeoPixelLightGroup( Adafruit_NeoPixel pNeoPixelStrip,
                                                     Switch &pLightSwitch,
                                                     Switch &pFogLightSwitch,
                                                     Switch &pBreakSwitch,
                                                     Switch &pLeftBlinkerSwitch,
                                                     Switch &pRightBlinkerSwitch,
                                                     Switch &pBackupLightSwtch )
-    : mNeoPixelStrip( NEO_PIXEL_COUNT, pArduinoPin, NEO_GRB + NEO_KHZ800 )
+    : mNeoPixelStrip( pNeoPixelStrip )
     , mLightSwitch( pLightSwitch )
     , mFogLightSwitch( pFogLightSwitch )
     , mBreakSwitch( pBreakSwitch )
@@ -44,6 +44,10 @@ CamaroNeoPixelLightGroup::CamaroNeoPixelLightGroup( uint8_t pArduinoPin,
     , mRightBlinkerSwitch( pRightBlinkerSwitch )
     , mBackupLightSwtch( pBackupLightSwtch )
 {
+    if ( MAX_PIXEL > mNeoPixelStrip.numPixels() )
+    {
+        // TODO and now???
+    }
 }
 
 CamaroNeoPixelLightGroup::~CamaroNeoPixelLightGroup()

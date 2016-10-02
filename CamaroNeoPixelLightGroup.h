@@ -35,10 +35,11 @@ public:
         BACKUP_LIGHT_LEFT_PIXEL,
         BACK_LIGHT_TWO_LEFT_PIXEL,
         BACK_LIGHT_ONE_LEFT_PIXEL,
-        POSITION_MARKER_REAR_LEFT_PIXEL
+        POSITION_MARKER_REAR_LEFT_PIXEL,
+		MAX_PIXEL
     } NeoPixelPosition_t;
 
-    CamaroNeoPixelLightGroup( uint8_t pArduinoPin,
+    CamaroNeoPixelLightGroup( Adafruit_NeoPixel pNeoPixelStrip,
                               Switch &pLightSwitch,
                               Switch &pFogLightSwitch,
                               Switch &pBreakSwitch,
@@ -52,8 +53,6 @@ public:
 
 private:
     uint32_t getBackLightColor( Switch &pBlinkerSwitch );
-
-    static const uint16_t NEO_PIXEL_COUNT = 14;
 
     static const uint32_t BLACK_COLOR;
 
@@ -72,7 +71,7 @@ private:
     static const uint32_t BACK_LIGHT_BREAK_BLINKER_COLOR;
     static const uint32_t BACK_LIGHT_COLOR;
 
-    Adafruit_NeoPixel mNeoPixelStrip;
+    Adafruit_NeoPixel &mNeoPixelStrip;
     Switch &mLightSwitch;
     Switch &mFogLightSwitch;
     Switch &mBreakSwitch;

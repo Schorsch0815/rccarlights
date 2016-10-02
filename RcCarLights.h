@@ -233,6 +233,8 @@ private:
 
     static const unsigned long THRESHOLD_3RD_CHANNEL = 512;
 
+    static const uint16_t NEO_PIXEL_COUNT = 14;
+
     RemoteControlCarAdapter mRemoteControlCarAdapter;
 
     // switch, condition and group settings for general light/park light handling
@@ -272,6 +274,8 @@ private:
     XenonLightBehavior mHeadLightBehavior;
 
     rccarlights::PinLightGroup mHeadlightLightGroup;
+
+    Adafruit_NeoPixel mNeoPixelStrip;
 
     // light group for neo pixel strip
     rccarlights::CamaroNeoPixelLightGroup mCamaroLightGroup;
