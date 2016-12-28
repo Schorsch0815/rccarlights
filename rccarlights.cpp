@@ -17,23 +17,7 @@
  * Copyright: Jochen Schales 2014
  *
  * --------------------------------------------------------------------*/
-
-#include "Arduino.h"
-
-#ifdef ARDUINO
-#if ARDUINO == 10609
-#error "ARDUINO >= 100"
-#else
-#error "ARDUINO defined"
-#endif
-#else
-#error "not defined"
-#endif
-
-// to include Adafruit_NeoPixel.h it's a hack, otherwise the library path
-// will not be included as an include path
-//#include <Adafruit_NeoPixel.h>
-#include "RcCarLights.h"
+#include "rccarlights.h"
 
 RcCarLights gRcCarLights;
 

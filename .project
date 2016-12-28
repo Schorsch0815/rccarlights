@@ -32,24 +32,19 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>rccarswitches</name>
+			<name>Adafruit_NeoPixel</name>
 			<type>2</type>
-			<location>/home/ejocsch/gitRepo/rccarlights/rccarswitches</location>
+			<location>/home/jochen/gitRepo/Adafruit_NeoPixel</location>
 		</link>
 		<link>
 			<name>core/core</name>
 			<type>2</type>
-			<location>/home/ejocsch/bin/eclipseArduino/arduinoPlugin/packages/arduino/hardware/avr/1.6.11/cores/arduino</location>
+			<location>/home/jochen/bin/sloeber/arduinoPlugin/packages/arduino/hardware/avr/1.6.14/cores/arduino</location>
 		</link>
 		<link>
 			<name>core/variant</name>
 			<type>2</type>
-			<location>/home/ejocsch/bin/eclipseArduino/arduinoPlugin/packages/arduino/hardware/avr/1.6.11/variants/eightanaloginputs</location>
-		</link>
-		<link>
-			<name>libraries/Adafruit_NeoPixel</name>
-			<type>2</type>
-			<location>/home/ejocsch/Arduino/libraries/Adafruit_NeoPixel</location>
+			<location>/home/jochen/bin/sloeber/arduinoPlugin/packages/arduino/hardware/avr/1.6.14/variants/eightanaloginputs</location>
 		</link>
 	</linkedResources>
 </projectDescription>
